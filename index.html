@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>馬卡龍工作小幫手</title>
+    <title>todo 工作幫手</title>
     <style>
         /* 馬卡龍色系變數 */
         :root {
@@ -53,10 +53,7 @@
             --shadow-color: rgba(0, 0, 0, 0.1);
         }
         /* 像素風 */
-        @font-face {
-            font-family: 'Pixelify Sans';
-            src: url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap') format('truetype');
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap');
         .theme-pixel {
             --primary-color: #2E58A4;
             --secondary-color: #4CAF50;
@@ -68,6 +65,13 @@
             --border-radius-button: 0;
             --font-family-main: 'Pixelify Sans', cursive;
             --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+        .theme-pixel body, 
+        .theme-pixel button, 
+        .theme-pixel input, 
+        .theme-pixel select, 
+        .theme-pixel textarea {
+            font-family: var(--font-family-main);
         }
         /* 森林風 */
         .theme-forest {
@@ -232,7 +236,8 @@
             box-shadow: 4px 4px 0 var(--text-color);
         }
         
-        #past-todo-page .card {
+        #past-todo-page .card,
+        #theme-settings .card {
             margin-top: 50px; 
         }
 
@@ -903,6 +908,7 @@
         .custom-image-option input[type="file"] {
             display: block;
             margin-top: 10px;
+            margin-bottom: 10px; 
         }
         .custom-color-option {
             display: flex;
@@ -986,7 +992,7 @@
         
         <div id="past-todo-page" class="page">
             <div class="card">
-                <button class="nav-button" style="padding: 10px 20px; font-size: 1em; margin-top: -10px;" onclick="showPage('todo')">返回待辦清單</button>
+                <button class="nav-button" style="padding: 10px 20px; font-size: 1em; margin-bottom: 20px;" onclick="showPage('todo')">返回主頁</button>
                 <h2>過往待辦事項</h2>
                 <ul class="past-todo-list" id="past-todo-list"></ul>
             </div>
@@ -994,7 +1000,7 @@
         
         <div id="theme-settings" class="page">
             <div class="card">
-                <button class="nav-button" style="padding: 10px 20px; font-size: 1em; margin-top: -10px;" onclick="showPage('todo')">返回主頁</button>
+                <button class="nav-button" style="padding: 10px 20px; font-size: 1em; margin-bottom: 20px;" onclick="showPage('todo')">返回主頁</button>
                 <h2>主題設定</h2>
                 
                 <h3>預設主題</h3>
@@ -1048,6 +1054,7 @@
                     <button onclick="pauseTimer()">暫停</button>
                     <button onclick="resetTimer()">重設</button>
                 </div>
+                <audio id="alarm-sound" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
             </div>
         </div>
 
@@ -1379,6 +1386,7 @@
         const timerDisplay = document.getElementById('timer-display');
         const workTimeInput = document.getElementById('work-time');
         const breakTimeInput = document.getElementById('break-time');
+        const alarmSound = document.getElementById('alarm-sound'); 
         let timerInterval;
         let timeLeft;
         let isRunning = false;
@@ -1396,6 +1404,14 @@
             timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
+        function playAlarm() {
+            alarmSound.play();
+            setTimeout(() => {
+                alarmSound.pause();
+                alarmSound.currentTime = 0; 
+            }, 3000); // 3秒後停止
+        }
+
         function startTimer() {
             if (isRunning) return;
             isRunning = true;
@@ -1408,6 +1424,7 @@
                 } else {
                     clearInterval(timerInterval);
                     isRunning = false;
+                    playAlarm(); 
                     alert(isWorkTime ? '工作時間結束！開始休息吧！' : '休息時間結束！繼續工作吧！');
                     isWorkTime = !isWorkTime;
                     setTimer();
