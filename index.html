@@ -30,7 +30,7 @@
             background-attachment: fixed;
             color: var(--text-color);
             margin: 0;
-            padding: 30px;
+            padding: 20px; /* 調整整體邊距 */
             display: flex;
             justify-content: center;
             align-items: flex-start;
@@ -104,18 +104,18 @@
         /* 側邊菜單按鈕 */
         #menu-button {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 15px; /* 調整位置 */
+            left: 15px; /* 調整位置 */
             z-index: 100;
             background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 45px; /* 調整大小 */
+            height: 45px; /* 調整大小 */
             font-size: 1.5em;
             cursor: pointer;
-            box-shadow: 0 4px 8px var(--shadow-color);
+            box-shadow: 4px 4px 8px var(--shadow-color);
             transition: transform 0.2s, background-color 0.2s;
         }
         #menu-button:hover {
@@ -196,16 +196,16 @@
         .container {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px; /* 調整間距 */
             width: 100%;
             max-width: 1000px;
-            margin-top: 50px;
+            margin-top: 40px; /* 調整與頂部菜單按鈕的距離 */
         }
 
         .page {
             display: none;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px; /* 調整間距 */
         }
 
         .page.active {
@@ -216,7 +216,7 @@
             background-color: var(--card-bg-color);
             border-radius: var(--border-radius-main);
             box-shadow: 0 6px 12px var(--shadow-color);
-            padding: 30px;
+            padding: 20px; /* 調整卡片內距 */
             transition: transform 0.2s, box-shadow 0.2s;
             width: 100%;
             box-sizing: border-box;
@@ -239,29 +239,32 @@
         #past-todo-page .card,
         #theme-settings .card,
         #calendar-page .card {
-            margin-top: 50px; 
+            margin-top: 30px; /* 調整與頂部菜單按鈕的距離 */
         }
 
         h2 {
             margin-top: 0;
             color: var(--primary-color);
             text-align: center;
-            font-size: 1.8em;
-            margin-bottom: 20px;
+            font-size: 1.5em; /* 調整字體大小 */
+            margin-bottom: 15px; /* 調整間距 */
+        }
+        h3 {
+             font-size: 1.2em;
         }
 
         .navigation {
             display: flex;
-            gap: 20px;
+            gap: 10px; /* 調整間距 */
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px; /* 調整間距 */
             flex-wrap: nowrap; 
             overflow-x: auto; 
             -webkit-overflow-scrolling: touch; 
         }
 
         .nav-button {
-            padding: 15px 25px;
+            padding: 12px 20px; /* 調整按鈕內距 */
             border-radius: var(--border-radius-button);
             background-color: var(--primary-color);
             color: white;
@@ -269,7 +272,7 @@
             font-weight: bold;
             transition: background-color 0.2s;
             cursor: pointer;
-            font-size: 1.1em;
+            font-size: 1em; /* 調整字體大小 */
             flex-shrink: 0; 
         }
         .nav-button:hover {
@@ -291,8 +294,8 @@
         .todo-input-group, .timeline-input-group, .list-create-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 10px; /* 調整間距 */
+            margin-bottom: 15px; /* 調整間距 */
         }
         
         .list-create-group {
@@ -306,7 +309,7 @@
         .todo-input-group input, .todo-input-group select, .add-button,
         .timeline-input-group input, .timeline-input-group button, .list-create-group input,
         .habit-input-group input, .habit-input-group select, .habit-input-group button {
-            padding: 15px;
+            padding: 12px; /* 調整內距 */
             border: 1px solid #ccc;
             border-radius: var(--border-radius-button);
             font-size: 1em;
@@ -346,16 +349,17 @@
         .todo-lists-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px; /* 調整間距 */
+            margin-bottom: 15px; /* 調整間距 */
         }
         .todo-list-tab {
-            padding: 10px 15px;
+            padding: 8px 12px; /* 調整內距 */
             border-radius: 8px;
             background-color: #E6EAF0;
             cursor: pointer;
             transition: background-color 0.2s;
             font-weight: bold;
+            font-size: 0.9em; /* 調整字體大小 */
         }
         .todo-list-tab.active {
             background-color: var(--secondary-color);
@@ -378,13 +382,13 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 10px; /* 調整間距 */
         }
 
         .todo-item {
             background-color: #F8F9FA;
             border: 1px solid #eee;
-            padding: 20px;
+            padding: 15px; /* 調整內距 */
             border-radius: 12px;
             display: flex;
             justify-content: space-between;
@@ -410,7 +414,7 @@
         .past-todo-item {
              background-color: #E8F4F2;
              border: 1px solid #eee;
-             padding: 20px;
+             padding: 15px; /* 調整內距 */
              border-radius: 12px;
              text-decoration: line-through;
              color: #999;
@@ -424,14 +428,15 @@
 
         .todo-text {
             flex-grow: 1;
-            margin-right: 15px;
+            margin-right: 10px; /* 調整間距 */
         }
         .todo-item-info {
             display: flex;
             flex-direction: column;
+            font-size: 0.9em; /* 調整字體大小 */
         }
         .todo-datetime {
-            font-size: 0.9em;
+            font-size: 0.8em; /* 調整字體大小 */
             color: #888;
             margin-top: 5px;
         }
@@ -440,8 +445,8 @@
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 1.4em;
-            margin-left: 10px;
+            font-size: 1.2em; /* 調整字體大小 */
+            margin-left: 8px; /* 調整間距 */
             color: #777;
             transition: color 0.2s;
         }
@@ -468,9 +473,10 @@
             align-items: center;
         }
         .todo-input-group label {
-            width: 50px;
+            width: 40px; /* 調整寬度 */
             font-weight: bold;
             color: var(--text-color);
+            font-size: 0.9em; /* 調整字體大小 */
         }
         .todo-input-group input[type="date"],
         .todo-input-group input[type="time"] {
@@ -491,21 +497,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 10px; /* 調整間距 */
+            margin-bottom: 20px; /* 調整間距 */
+            flex-wrap: wrap;
         }
         .pomodoro-settings label {
-            font-size: 1.1em;
+            font-size: 1em; /* 調整字體大小 */
         }
         .pomodoro-settings input {
-            width: 80px;
-            padding: 12px;
-            font-size: 1em;
+            width: 60px; /* 調整寬度 */
+            padding: 10px; /* 調整內距 */
+            font-size: 0.9em; /* 調整字體大小 */
         }
 
         #timer-display {
-            font-size: 5em;
-            margin: 30px 0;
+            font-size: 4em; /* 調整字體大小 */
+            margin: 20px 0; /* 調整間距 */
             font-weight: bold;
             color: var(--primary-color);
         }
@@ -513,18 +520,18 @@
         .timer-buttons {
             display: flex;
             justify-content: center;
-            gap: 20px; 
+            gap: 15px; /* 調整間距 */
         }
         .timer-buttons button {
             background-color: var(--accent-color);
             border: none;
-            padding: 15px 30px;
+            padding: 12px 25px; /* 調整內距 */
             border-radius: var(--border-radius-button);
             cursor: pointer;
             color: white;
             font-weight: bold;
             transition: background-color 0.2s;
-            font-size: 1.1em;
+            font-size: 1em; /* 調整字體大小 */
             font-family: var(--font-family-main);
         }
 
@@ -547,9 +554,9 @@
         /* 時間線樣式 */
         .timeline-item {
             position: relative;
-            padding-left: 40px;
+            padding-left: 30px; /* 調整內距 */
             border-left: 3px solid var(--primary-color);
-            margin-left: 15px;
+            margin-left: 10px; /* 調整間距 */
         }
         .theme-pixel .timeline-item {
             border-left: 4px solid var(--primary-color);
@@ -558,27 +565,27 @@
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -10px;
+            left: -8px; /* 調整位置 */
             top: 0;
-            width: 18px;
-            height: 18px;
+            width: 15px; /* 調整大小 */
+            height: 15px; /* 調整大小 */
             background-color: var(--primary-color);
             border: 3px solid var(--background-color);
             border-radius: 50%;
         }
         .theme-pixel .timeline-item::before {
             border-radius: 0;
-            width: 16px;
-            height: 16px;
-            left: -12px;
+            width: 12px; /* 調整大小 */
+            height: 12px; /* 調整大小 */
+            left: -10px; /* 調整位置 */
             border: 4px solid var(--card-bg-color);
         }
 
         .timeline-node {
             background-color: #F8F9FA;
-            padding: 15px;
+            padding: 12px; /* 調整內距 */
             border-radius: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* 調整間距 */
             border-left: 4px solid var(--secondary-color);
         }
         .theme-pixel .timeline-node {
@@ -589,7 +596,7 @@
             box-shadow: 2px 2px 0 var(--text-color);
         }
         .timeline-node-date {
-            font-size: 0.9em;
+            font-size: 0.8em; /* 調整字體大小 */
             color: #888;
             margin-top: 5px;
         }
@@ -600,8 +607,8 @@
         .timeline-node-input {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px; /* 調整間距 */
+            margin-top: 10px; /* 調整間距 */
         }
         .timeline-node-input .input-group {
             display: flex;
@@ -609,19 +616,20 @@
             align-items: center;
         }
         .timeline-node-input label {
-            width: 50px;
+            width: 40px; /* 調整寬度 */
             font-weight: bold;
             color: var(--text-color);
+            font-size: 0.9em;
         }
         .timeline-node-input input {
             flex-grow: 1;
-            padding: 12px;
+            padding: 10px; /* 調整內距 */
             border-radius: 8px;
             border: 1px solid #ccc;
         }
         .timeline-node-input input[type="date"],
         .timeline-node-input input[type="time"] {
-            padding: 12px;
+            padding: 10px;
             background-color: #E8F4F2;
         }
         .theme-pixel .timeline-node-input input[type="date"],
@@ -636,8 +644,8 @@
         .habit-input-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 10px; /* 調整間距 */
+            margin-bottom: 15px; /* 調整間距 */
         }
         #by-date-options {
             display: flex;
@@ -649,10 +657,10 @@
             gap: 10px;
         }
         #habit-target-count-date {
-            padding: 10px;
+            padding: 8px; /* 調整內距 */
         }
         #habit-end-date {
-            padding: 12px;
+            padding: 10px; /* 調整內距 */
         }
         .theme-pixel #habit-end-date {
             background-color: var(--background-color);
@@ -661,14 +669,14 @@
 
         /* 習慣項目抽屜樣式 */
         .habit-item {
-            margin-bottom: 15px;
+            margin-bottom: 10px; /* 調整間距 */
         }
 
         .habit-item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 20px; 
+            padding: 10px 15px; /* 調整內距 */
             border-radius: 12px;
             background-color: #F8F9FA;
             cursor: pointer;
@@ -681,7 +689,7 @@
             background-color: var(--list-item-hover);
         }
         .habit-item-header.expanded {
-            padding: 20px;
+            padding: 15px; /* 調整內距 */
             border-radius: 12px 12px 0 0;
             border-bottom: none;
             min-height: auto;
@@ -703,10 +711,11 @@
         }
         .habit-title-container h3 {
             margin: 0;
+            font-size: 1.1em; /* 調整字體大小 */
         }
 
         .habit-item-content {
-            padding: 0 20px;
+            padding: 0 15px; /* 調整內距 */
             border: 1px solid #eee;
             border-top: none;
             border-radius: 0 0 12px 12px;
@@ -724,7 +733,7 @@
         }
 
         .habit-item-content.expanded {
-            padding: 20px;
+            padding: 15px; /* 調整內距 */
             max-height: 500px; 
         }
 
@@ -733,8 +742,8 @@
             background-color: #e0e0e0;
             border-radius: 8px;
             overflow: hidden;
-            margin-top: 10px;
-            margin-bottom: 20px;
+            margin-top: 8px; /* 調整間距 */
+            margin-bottom: 15px; /* 調整間距 */
         }
         .theme-pixel .habit-progress-container {
             border-radius: 0;
@@ -743,101 +752,108 @@
         }
 
         .habit-progress-bar {
-            height: 20px;
+            height: 18px; /* 調整高度 */
             background-color: var(--primary-color);
             text-align: center;
-            line-height: 20px;
+            line-height: 18px;
             color: white;
-            font-size: 0.8em;
+            font-size: 0.7em; /* 調整字體大小 */
             transition: width 0.4s ease;
         }
         .theme-pixel .habit-progress-bar {
             background-color: var(--secondary-color);
         }
 
-        /* 習慣日曆樣式 (調整為更小) */
-        .habit-calendar-wrapper {
-            max-width: 300px;
+        /* 日曆整體樣式調整 (調整為更小) */
+        .habit-calendar-wrapper, .calendar-wrapper {
+            max-width: 100%; /* 讓它在小螢幕上填滿 */
             margin: 0 auto;
         }
-        .habit-calendar-nav {
+        .habit-calendar-nav, .calendar-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px; /* 縮小間距 */
         }
-        .habit-calendar-nav button {
+        .habit-calendar-nav button, .calendar-nav button {
             background: none;
             border: none;
-            font-size: 1.2em; /* 縮小字體 */
+            font-size: 1.1em; /* 縮小字體 */
             cursor: pointer;
             color: var(--primary-color);
             transition: color 0.2s;
+            padding: 5px;
         }
-        .habit-calendar-nav button:hover {
+        .habit-calendar-nav button:hover, .calendar-nav button:hover {
             color: #93B8C7;
         }
-        .theme-pixel .habit-calendar-nav button {
+        .theme-pixel .habit-calendar-nav button, .theme-pixel .calendar-nav button {
             color: var(--text-color);
         }
-        .habit-calendar-nav span {
+        .habit-calendar-nav span, .calendar-nav h3 {
             font-weight: bold;
             color: var(--primary-color);
             font-size: 1em; /* 縮小字體 */
+            margin: 0;
         }
-        .habit-calendar-grid {
+        .theme-pixel .habit-calendar-nav span, .theme-pixel .calendar-nav h3 {
+            color: var(--text-color);
+        }
+        .habit-calendar-grid, .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 2px; /* 縮小間距 */
             text-align: center;
         }
-        .habit-calendar-grid > div {
-            padding: 8px; /* 縮小內距 */
-            border-radius: 8px; /* 縮小圓角 */
+        .habit-calendar-grid > div, .calendar-grid > div {
+            padding: 6px; /* 縮小內距 */
+            border-radius: 6px; /* 縮小圓角 */
             background-color: #E6EAF0;
             cursor: pointer;
             transition: background-color 0.2s, transform 0.2s;
             position: relative;
-            font-size: 0.9em; /* 縮小字體 */
+            font-size: 0.8em; /* 縮小字體 */
+            user-select: none;
         }
-        .theme-pixel .habit-calendar-grid > div {
+        .theme-pixel .habit-calendar-grid > div, .theme-pixel .calendar-grid > div {
             border-radius: 0;
             border: 2px solid var(--text-color);
             background-color: var(--card-bg-color);
         }
-        .habit-calendar-grid > div:hover {
+
+        .habit-calendar-grid > div:hover, .calendar-grid > div:hover {
             background-color: #D3D8E0;
             transform: scale(1.05);
         }
-        .theme-pixel .habit-calendar-grid > div:hover {
+        .theme-pixel .habit-calendar-grid > div:hover, .theme-pixel .calendar-grid > div:hover {
             background-color: var(--primary-color);
         }
-        .habit-calendar-grid .day-name {
+        .habit-calendar-grid .day-name, .calendar-grid .day-name {
             font-weight: bold;
             color: #888;
             background: none;
             cursor: default;
         }
-        .theme-pixel .habit-calendar-grid .day-name {
+        .theme-pixel .habit-calendar-grid .day-name, .theme-pixel .calendar-grid .day-name {
             color: var(--text-color);
             background-color: transparent;
             border: none;
         }
-        .habit-calendar-grid .day-name:hover {
+        .habit-calendar-grid .day-name:hover, .calendar-grid .day-name:hover {
             transform: none;
         }
-        .habit-calendar-grid .empty-day {
+        .habit-calendar-grid .empty-day, .calendar-grid .empty-day {
             background: none;
             cursor: default;
         }
-        .habit-calendar-grid .empty-day:hover {
+        .habit-calendar-grid .empty-day:hover, .calendar-grid .empty-day:hover {
             transform: none;
         }
-        .habit-calendar-grid .today {
+        .habit-calendar-grid .today, .calendar-grid .today {
             border: 2px solid var(--accent-color);
             background-color: #FEE7ED;
         }
-        .theme-pixel .habit-calendar-grid .today {
+        .theme-pixel .habit-calendar-grid .today, .theme-pixel .calendar-grid .today {
             background-color: var(--accent-color);
         }
         .habit-calendar-grid .achieved {
@@ -850,101 +866,14 @@
             color: white;
             font-weight: bold;
         }
-
-        /* 日曆整體樣式調整 (調整為更小) */
-        .calendar-wrapper {
-            max-width: 300px;
-            margin: 0 auto;
-        }
-        .calendar-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .calendar-nav button {
-            background: none;
-            border: none;
-            font-size: 1.2em; /* 縮小字體 */
-            cursor: pointer;
-            color: var(--primary-color);
-            transition: color 0.2s;
-        }
-        .calendar-nav button:hover {
-            color: #93B8C7;
-        }
-        .theme-pixel .calendar-nav button {
-            color: var(--text-color);
-        }
-        .calendar-nav h3 {
-            margin: 0;
-            color: var(--primary-color);
-            font-size: 1em; /* 縮小字體 */
-        }
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 2px; /* 縮小間距 */
-            text-align: center;
-        }
-        .calendar-grid > div {
-            padding: 8px; /* 縮小內距 */
-            border-radius: 8px; /* 縮小圓角 */
-            background-color: #E6EAF0;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.2s;
-            position: relative;
-            font-size: 0.9em; /* 縮小字體 */
-        }
-        .theme-pixel .calendar-grid > div {
-            border-radius: 0;
-            border: 2px solid var(--text-color);
-            background-color: var(--card-bg-color);
-        }
-
-        .calendar-grid > div:hover {
-            background-color: #D3D8E0;
-            transform: scale(1.05);
-        }
-        .theme-pixel .calendar-grid > div:hover {
-            background-color: var(--primary-color);
-        }
-        .calendar-grid .day-name {
-            font-weight: bold;
-            color: #888;
-            background: none;
-            cursor: default;
-        }
-        .theme-pixel .calendar-grid .day-name {
-            color: var(--text-color);
-            background-color: transparent;
-            border: none;
-        }
-        .calendar-grid .day-name:hover {
-            transform: none;
-        }
-        .calendar-grid .empty-day {
-            background: none;
-            cursor: default;
-        }
-        .calendar-grid .empty-day:hover {
-            transform: none;
-        }
-        .calendar-grid .today {
-            border: 2px solid var(--accent-color);
-            background-color: #FEE7ED;
-        }
-        .theme-pixel .calendar-grid .today {
-            background-color: var(--accent-color);
-        }
         .has-event::after {
             content: '';
             position: absolute;
-            bottom: 5px;
+            bottom: 4px; /* 調整位置 */
             left: 50%;
             transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
+            width: 5px; /* 縮小尺寸 */
+            height: 5px; /* 縮小尺寸 */
             background-color: var(--secondary-color);
             border-radius: 50%;
         }
@@ -953,63 +882,68 @@
             border: 1px solid var(--text-color);
         }
         #calendar-events {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 15px; /* 調整間距 */
+            padding: 12px; /* 調整內距 */
             border-radius: 10px;
             background-color: #F8F9FA;
         }
         #calendar-events h4 {
             margin-top: 0;
+            font-size: 1em;
         }
         #calendar-events ul {
             list-style: none;
             padding: 0;
+            margin-top: 10px;
         }
         #calendar-events li {
             background-color: #E6EAF0;
-            padding: 10px;
+            padding: 8px; /* 調整內距 */
             border-radius: 8px;
             margin-bottom: 5px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 0.9em;
         }
         #add-event-form {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 8px; /* 調整間距 */
+            margin-top: 10px; /* 調整間距 */
         }
         #add-event-form input {
             flex-grow: 1;
-            padding: 10px;
+            padding: 8px; /* 調整內距 */
             border-radius: 8px;
             border: 1px solid #ccc;
         }
         #add-event-form button {
             flex-shrink: 0;
+            padding: 8px 12px;
         }
 
         /* === 主題設定頁面樣式 === */
         .theme-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 調整最小寬度 */
+            gap: 15px; /* 調整間距 */
+            margin-bottom: 20px; /* 調整間距 */
         }
         .theme-option {
-            height: 80px;
+            height: 70px; /* 調整高度 */
             border-radius: var(--border-radius-main);
             cursor: pointer;
             border: 3px solid transparent;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            padding: 10px;
+            padding: 8px; /* 調整內距 */
             font-weight: bold;
             color: white;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
             box-shadow: 0 4px 8px var(--shadow-color);
             transition: border-color 0.2s, transform 0.2s;
+            font-size: 0.9em;
         }
         .theme-option:hover {
             transform: translateY(-3px);
@@ -1041,31 +975,85 @@
         .custom-options {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px; /* 調整間距 */
         }
         .custom-image-option input[type="file"] {
             display: block;
-            margin-top: 10px;
-            margin-bottom: 10px; 
+            margin-top: 8px; /* 調整間距 */
+            margin-bottom: 8px; 
+            font-size: 0.9em;
         }
         .custom-color-option {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         .color-input-group {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         .color-input-group label {
             flex-grow: 1;
+            font-size: 0.9em;
         }
         .color-input-group input[type="color"] {
-            width: 50px;
-            height: 50px;
+            width: 40px; /* 調整尺寸 */
+            height: 40px; /* 調整尺寸 */
             border: none;
             cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                margin-top: 50px;
+                gap: 15px;
+            }
+            #menu-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2em;
+            }
+            .navigation {
+                padding-bottom: 5px;
+                justify-content: flex-start;
+            }
+            .nav-button {
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+            .card {
+                padding: 15px;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            .list-create-group {
+                flex-direction: column;
+            }
+            .pomodoro-settings {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .pomodoro-settings div {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+            }
+            .pomodoro-settings input {
+                width: 50%;
+            }
+            #timer-display {
+                font-size: 3em;
+            }
+            .timer-buttons button {
+                font-size: 0.9em;
+                padding: 10px 20px;
+            }
         }
     </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1143,9 +1131,9 @@
                 <h2>日曆</h2>
                 <div class="calendar-wrapper">
                     <div class="calendar-nav">
-                        <button onclick="changeMonth(-1)">&#9664;</button>
+                        <button onclick="changeCalendarMonth(-1)">&#9664;</button>
                         <h3 id="current-month-year"></h3>
-                        <button onclick="changeMonth(1)">&#9654;</button>
+                        <button onclick="changeCalendarMonth(1)">&#9654;</button>
                     </div>
                     <div class="calendar-grid" id="calendar-grid"></div>
                 </div>
@@ -1205,10 +1193,14 @@
             <div class="card pomodoro-timer">
                 <h2>番茄鐘</h2>
                 <div class="pomodoro-settings">
-                    <label for="work-time">工作時間 (分):</label>
-                    <input type="number" id="work-time" value="25" min="1">
-                    <label for="break-time">休息時間 (分):</label>
-                    <input type="number" id="break-time" value="5" min="1">
+                    <div>
+                        <label for="work-time">工作時間 (分):</label>
+                        <input type="number" id="work-time" value="25" min="1">
+                    </div>
+                    <div>
+                        <label for="break-time">休息時間 (分):</label>
+                        <input type="number" id="break-time" value="5" min="1">
+                    </div>
                 </div>
                 <div id="timer-display">25:00</div>
                 <div class="timer-buttons">
@@ -1301,15 +1293,15 @@
             renderCalendarPage();
         }
 
-        // === 日曆功能 (新增) ===
+        // === 日曆功能 ===
         const calendarGrid = document.getElementById('calendar-grid');
         const currentMonthYear = document.getElementById('current-month-year');
         const selectedDateTitle = document.getElementById('selected-date-title');
         const eventList = document.getElementById('event-list');
         const newEventInput = document.getElementById('new-event-input');
 
-        let currentMonth = new Date().getMonth();
-        let currentYear = new Date().getFullYear();
+        let currentCalendarMonth = new Date().getMonth();
+        let currentCalendarYear = new Date().getFullYear();
         let selectedDate = null;
         let calendarEvents = JSON.parse(localStorage.getItem('calendarEvents')) || {};
 
@@ -1319,10 +1311,10 @@
 
         function renderCalendarPage() {
             const today = new Date();
-            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
-            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+            const firstDayOfMonth = new Date(currentCalendarYear, currentCalendarMonth, 1);
+            const lastDayOfMonth = new Date(currentCalendarYear, currentCalendarMonth + 1, 0);
 
-            currentMonthYear.textContent = `${currentYear}年 ${currentMonth + 1}月`;
+            currentMonthYear.textContent = `${currentCalendarYear}年 ${currentCalendarMonth + 1}月`;
             calendarGrid.innerHTML = '';
             
             const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
@@ -1341,8 +1333,8 @@
             }
 
             for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
-                const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const isToday = today.getDate() === day && today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+                const date = `${currentCalendarYear}-${String(currentCalendarMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = today.getDate() === day && today.getMonth() === currentCalendarMonth && today.getFullYear() === currentCalendarYear;
                 const hasEvents = calendarEvents[date] && calendarEvents[date].length > 0;
                 
                 const dayDiv = document.createElement('div');
@@ -1357,14 +1349,14 @@
             eventList.innerHTML = '';
         }
 
-        function changeMonth(delta) {
-            currentMonth += delta;
-            if (currentMonth < 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else if (currentMonth > 11) {
-                currentMonth = 0;
-                currentYear++;
+        function changeCalendarMonth(delta) {
+            currentCalendarMonth += delta;
+            if (currentCalendarMonth < 0) {
+                currentCalendarMonth = 11;
+                currentCalendarYear--;
+            } else if (currentCalendarMonth > 11) {
+                currentCalendarMonth = 0;
+                currentCalendarYear++;
             }
             renderCalendarPage();
         }
@@ -1919,14 +1911,16 @@
                 
                 let goalText = '';
                 if (habit.goalType === 'by-date') {
-                    const timeLeft = Math.ceil((new Date(habit.endDate) - new Date()) / (1000 * 60 * 60 * 24));
-                    goalText = `在 ${habit.endDate} 前完成`;
-                    if (timeLeft > 0) {
-                        goalText += ` (剩餘 ${timeLeft} 天)`;
-                    } else if (timeLeft <= 0 && currentCount < habit.target) {
-                        goalText += ` (已逾期)`;
-                    } else if (currentCount >= habit.target) {
-                        goalText += ` (已達成)`;
+                    const today = new Date();
+                    const endDate = new Date(habit.endDate);
+                    const timeLeft = Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+                    
+                    if (currentCount >= habit.target) {
+                        goalText = `在 ${habit.endDate} 前已達成`;
+                    } else if (timeLeft < 0) {
+                        goalText = `在 ${habit.endDate} 前已逾期`;
+                    } else {
+                        goalText = `在 ${habit.endDate} 前完成 (剩餘 ${timeLeft} 天)`;
                     }
                 } else {
                     goalText = `總目標次數`;
@@ -2003,18 +1997,20 @@
         function getCurrentHabitCount(habit) {
             let count = 0;
             const today = new Date();
+            today.setHours(0, 0, 0, 0);
             
-            if (habit.goalType === 'by-date') {
-                const endDate = new Date(habit.endDate);
-                for (const date in habit.completedDays) {
-                    const checkDate = new Date(date);
-                    if (habit.completedDays[date] && checkDate <= endDate && checkDate <= today) {
-                        count++;
-                    }
-                }
-            } else { // 'by-count'
-                for (const date in habit.completedDays) {
-                    if (habit.completedDays[date]) {
+            for (const date in habit.completedDays) {
+                const checkDate = new Date(date);
+                checkDate.setHours(0, 0, 0, 0);
+
+                if (habit.completedDays[date] === 'achieved') {
+                    if (habit.goalType === 'by-date') {
+                        const endDate = new Date(habit.endDate);
+                        endDate.setHours(0, 0, 0, 0);
+                        if (checkDate <= endDate) {
+                            count++;
+                        }
+                    } else { // 'by-count'
                         count++;
                     }
                 }
@@ -2056,11 +2052,21 @@
             for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
                 const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const isToday = today.getDate() === day && today.getMonth() === currentMonth && today.getFullYear() === currentYear;
-                const achieved = habit.completedDays[date] === true;
+                const status = habit.completedDays[date];
                 
-                const className = `${isToday ? 'today' : ''} ${achieved ? 'achieved' : ''}`;
+                let className = `${isToday ? 'today' : ''}`;
+                if (status === 'achieved') {
+                    className += ' achieved';
+                } else if (status === 'missed') {
+                    className += ' missed';
+                }
                 
-                calendarHTML += `<div class="${className}" onclick="toggleHabitCompletion(${habitIndex}, '${date}')" data-date="${date}">${day}</div>`;
+                calendarHTML += `<div class="${className}" 
+                                     data-date="${date}"
+                                     onmousedown="event.preventDefault(); toggleHabitCompletion(event, ${habitIndex}, '${date}')" 
+                                     oncontextmenu="event.preventDefault(); toggleHabitCompletion(event, ${habitIndex}, '${date}')">
+                                     ${day}
+                                 </div>`;
             }
 
             calendarHTML += '</div></div>';
@@ -2078,14 +2084,16 @@
             if (progressInfoSpan) {
                 let goalText = '';
                 if (habit.goalType === 'by-date') {
-                    const timeLeft = Math.ceil((new Date(habit.endDate) - new Date()) / (1000 * 60 * 60 * 24));
-                    goalText = `在 ${habit.endDate} 前完成`;
-                    if (timeLeft > 0) {
-                        goalText += ` (剩餘 ${timeLeft} 天)`;
-                    } else if (timeLeft <= 0 && currentCount < habit.target) {
-                        goalText += ` (已逾期)`;
-                    } else if (currentCount >= habit.target) {
-                        goalText += ` (已達成)`;
+                    const today = new Date();
+                    const endDate = new Date(habit.endDate);
+                    const timeLeft = Math.ceil((endDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+                    
+                    if (currentCount >= habit.target) {
+                        goalText = `在 ${habit.endDate} 前已達成`;
+                    } else if (timeLeft < 0) {
+                        goalText = `在 ${habit.endDate} 前已逾期`;
+                    } else {
+                        goalText = `在 ${habit.endDate} 前完成 (剩餘 ${timeLeft} 天)`;
                     }
                 } else {
                     goalText = `總目標次數`;
@@ -2102,23 +2110,40 @@
         }
 
 
-        function toggleHabitCompletion(habitIndex, date) {
+        function toggleHabitCompletion(event, habitIndex, date) {
             const habit = habits[habitIndex];
-            
-            if (habit.completedDays[date] === true) {
-                delete habit.completedDays[date]; 
-            } else {
-                habit.completedDays[date] = true;
+            const dayElement = document.querySelector(`#habit-calendar-${habitIndex} [data-date="${date}"]`);
+
+            if (!dayElement || dayElement.classList.contains('day-name') || dayElement.classList.contains('empty-day')) {
+                return;
             }
-            
+
+            if (event.button === 0) { // 左鍵單擊
+                if (habit.completedDays[date] === 'achieved') {
+                    delete habit.completedDays[date];
+                } else {
+                    habit.completedDays[date] = 'achieved';
+                }
+            } else if (event.button === 2) { // 右鍵雙擊 (contextmenu)
+                if (habit.completedDays[date] === 'missed') {
+                    delete habit.completedDays[date];
+                } else {
+                    habit.completedDays[date] = 'missed';
+                }
+            }
+
             saveHabits();
             
-            // 找到對應的日曆天數元素並切換 'achieved' 類別
-            const dayElement = document.querySelector(`#habit-calendar-${habitIndex} [data-date="${date}"]`);
+            // 根據狀態更新 class
             if (dayElement) {
-                dayElement.classList.toggle('achieved');
+                dayElement.classList.remove('achieved', 'missed');
+                if (habit.completedDays[date] === 'achieved') {
+                    dayElement.classList.add('achieved');
+                } else if (habit.completedDays[date] === 'missed') {
+                    dayElement.classList.add('missed');
+                }
             }
-            
+
             // 更新進度條
             updateHabitProgressBar(habitIndex);
         }
