@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>todo 工作幫手</title>
+    <title>馬卡龍工作小幫手</title>
     <style>
         /* 馬卡龍色系變數 */
         :root {
@@ -237,7 +237,8 @@
         }
         
         #past-todo-page .card,
-        #theme-settings .card {
+        #theme-settings .card,
+        #calendar-page .card {
             margin-top: 50px; 
         }
 
@@ -755,101 +756,140 @@
         }
 
         /* 日曆整體樣式調整 */
-        .habit-calendar-wrapper {
-            max-width: 300px;
+        .habit-calendar-wrapper, .calendar-wrapper {
+            max-width: 400px;
             margin: 0 auto;
         }
-
-        .habit-calendar-header {
+        .calendar-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .calendar-nav button {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: color 0.2s;
+        }
+        .calendar-nav button:hover {
+            color: #93B8C7;
+        }
+        .theme-pixel .calendar-nav button {
+            color: var(--text-color);
+        }
+        .calendar-nav h3 {
+            margin: 0;
             color: var(--primary-color);
         }
-        .habit-calendar-body {
+        .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 3px;
+            gap: 5px;
             text-align: center;
         }
-        .habit-calendar-body > div {
-            font-size: 0.8em;
-        }
-        .habit-calendar-day {
-            padding: 6px;
-            border-radius: 6px;
+        .calendar-grid > div {
+            padding: 10px;
+            border-radius: 10px;
             background-color: #E6EAF0;
             cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
             position: relative;
-            font-size: 0.8em;
-            transition: background-color 0.2s;
         }
-        .theme-pixel .habit-calendar-day {
-            background-color: var(--background-color);
+        .theme-pixel .calendar-grid > div {
             border-radius: 0;
             border: 2px solid var(--text-color);
+            background-color: var(--card-bg-color);
         }
 
-        .habit-calendar-day:hover {
+        .calendar-grid > div:hover {
             background-color: #D3D8E0;
+            transform: scale(1.05);
         }
-        .theme-pixel .habit-calendar-day:hover {
+        .theme-pixel .calendar-grid > div:hover {
             background-color: var(--primary-color);
         }
-        .habit-calendar-day.today {
+        .calendar-grid .day-name {
+            font-weight: bold;
+            color: #888;
+            background: none;
+            cursor: default;
+        }
+        .theme-pixel .calendar-grid .day-name {
+            color: var(--text-color);
+            background-color: transparent;
+            border: none;
+        }
+        .calendar-grid .day-name:hover {
+            transform: none;
+        }
+        .calendar-grid .empty-day {
+            background: none;
+            cursor: default;
+        }
+        .calendar-grid .empty-day:hover {
+            transform: none;
+        }
+        .calendar-grid .today {
             border: 2px solid var(--accent-color);
             background-color: #FEE7ED;
         }
-        .theme-pixel .habit-calendar-day.today {
-            border: 2px solid var(--accent-color);
-            background-color: var(--background-color);
-        }
-        .habit-calendar-day.achieved {
-            background-color: #D6F5E3;
-        }
-        .theme-pixel .habit-calendar-day.achieved {
-            background-color: var(--secondary-color);
-        }
-        .habit-calendar-day.missed {
-            background-color: #FEE7ED;
-        }
-        .theme-pixel .habit-calendar-day.missed {
+        .theme-pixel .calendar-grid .today {
             background-color: var(--accent-color);
         }
-        .habit-calendar-day.achieved::after {
-            content: '✓';
-            color: green;
-            font-weight: bold;
+        .has-event::after {
+            content: '';
             position: absolute;
-            top: 50%;
+            bottom: 5px;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
         }
-        .theme-pixel .habit-calendar-day.achieved::after {
-            color: white;
-            text-shadow: 1px 1px 0 var(--text-color);
+        .theme-pixel .has-event::after {
+            background-color: var(--secondary-color);
+            border: 1px solid var(--text-color);
         }
-        .habit-calendar-day.missed::after {
-            content: '✗';
-            color: red;
-            font-weight: bold;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        #calendar-events {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #F8F9FA;
         }
-        .theme-pixel .habit-calendar-day.missed::after {
-            color: white;
-            text-shadow: 1px 1px 0 var(--text-color);
+        #calendar-events h4 {
+            margin-top: 0;
         }
-        #target-options {
+        #calendar-events ul {
+            list-style: none;
+            padding: 0;
+        }
+        #calendar-events li {
+            background-color: #E6EAF0;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 5px;
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            justify-content: space-between;
+            align-items: center;
         }
-
+        #add-event-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        #add-event-form input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        #add-event-form button {
+            flex-shrink: 0;
+        }
 
         /* === 主題設定頁面樣式 === */
         .theme-options {
@@ -941,6 +981,7 @@
     <div id="main-menu">
         <span id="menu-close" onclick="toggleMenu()">✕</span>
         <div class="menu-items-container">
+            <div class="menu-item" onclick="showCalendarPage()">日曆</div>
             <div class="menu-item" onclick="showPastTodos()">查看過往待辦</div>
             <div class="menu-item" onclick="showThemeSettings()">主題設定</div>
         </div>
@@ -995,6 +1036,29 @@
                 <button class="nav-button" style="padding: 10px 20px; font-size: 1em; margin-bottom: 20px;" onclick="showPage('todo')">返回主頁</button>
                 <h2>過往待辦事項</h2>
                 <ul class="past-todo-list" id="past-todo-list"></ul>
+            </div>
+        </div>
+
+        <div id="calendar-page" class="page">
+            <div class="card">
+                <button class="nav-button" style="padding: 10px 20px; font-size: 1em; margin-bottom: 20px;" onclick="showPage('todo')">返回主頁</button>
+                <h2>日曆</h2>
+                <div class="calendar-wrapper">
+                    <div class="calendar-nav">
+                        <button onclick="changeMonth(-1)">&#9664;</button>
+                        <h3 id="current-month-year"></h3>
+                        <button onclick="changeMonth(1)">&#9654;</button>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid"></div>
+                </div>
+                <div id="calendar-events">
+                    <h4 id="selected-date-title">請選擇日期</h4>
+                    <ul id="event-list"></ul>
+                    <div id="add-event-form">
+                        <input type="text" id="new-event-input" placeholder="新增行程...">
+                        <button class="add-button" onclick="addEvent()">新增</button>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -1114,7 +1178,7 @@
             document.getElementById(pageId).classList.add('active');
 
             const nav = document.querySelector('.navigation');
-            if (pageId === 'past-todo-page' || pageId === 'theme-settings') {
+            if (pageId === 'past-todo-page' || pageId === 'theme-settings' || pageId === 'calendar-page') {
                 nav.style.display = 'none';
             } else {
                 nav.style.display = 'flex';
@@ -1131,6 +1195,126 @@
             toggleMenu();
             showPage('past-todo-page');
             renderPastTodoItems();
+        }
+        
+        function showCalendarPage() {
+            toggleMenu();
+            showPage('calendar-page');
+            renderCalendarPage();
+        }
+
+        // === 日曆功能 (新增) ===
+        const calendarGrid = document.getElementById('calendar-grid');
+        const currentMonthYear = document.getElementById('current-month-year');
+        const selectedDateTitle = document.getElementById('selected-date-title');
+        const eventList = document.getElementById('event-list');
+        const newEventInput = document.getElementById('new-event-input');
+
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+        let selectedDate = null;
+        let calendarEvents = JSON.parse(localStorage.getItem('calendarEvents')) || {};
+
+        function saveCalendarEvents() {
+            localStorage.setItem('calendarEvents', JSON.stringify(calendarEvents));
+        }
+
+        function renderCalendarPage() {
+            const today = new Date();
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+
+            currentMonthYear.textContent = `${currentYear}年 ${currentMonth + 1}月`;
+            calendarGrid.innerHTML = '';
+            
+            const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
+            dayNames.forEach(day => {
+                const dayNameDiv = document.createElement('div');
+                dayNameDiv.className = 'day-name';
+                dayNameDiv.textContent = day;
+                calendarGrid.appendChild(dayNameDiv);
+            });
+
+            let dayOfWeek = firstDayOfMonth.getDay();
+            for (let i = 0; i < dayOfWeek; i++) {
+                const emptyDayDiv = document.createElement('div');
+                emptyDayDiv.className = 'empty-day';
+                calendarGrid.appendChild(emptyDayDiv);
+            }
+
+            for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
+                const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = today.getDate() === day && today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+                const hasEvents = calendarEvents[date] && calendarEvents[date].length > 0;
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.textContent = day;
+                dayDiv.className = `${isToday ? 'today' : ''} ${hasEvents ? 'has-event' : ''}`;
+                dayDiv.dataset.date = date;
+                dayDiv.onclick = () => selectDate(date);
+                calendarGrid.appendChild(dayDiv);
+            }
+            
+            selectedDateTitle.textContent = '請選擇日期';
+            eventList.innerHTML = '';
+        }
+
+        function changeMonth(delta) {
+            currentMonth += delta;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendarPage();
+        }
+
+        function selectDate(date) {
+            selectedDate = date;
+            selectedDateTitle.textContent = date;
+            renderEvents();
+        }
+
+        function renderEvents() {
+            eventList.innerHTML = '';
+            if (selectedDate && calendarEvents[selectedDate]) {
+                calendarEvents[selectedDate].forEach((event, index) => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${event}</span>
+                        <button onclick="deleteEvent(${index})">✗</button>
+                    `;
+                    eventList.appendChild(li);
+                });
+            }
+        }
+        
+        function addEvent() {
+            const eventText = newEventInput.value.trim();
+            if (selectedDate && eventText) {
+                if (!calendarEvents[selectedDate]) {
+                    calendarEvents[selectedDate] = [];
+                }
+                calendarEvents[selectedDate].push(eventText);
+                newEventInput.value = '';
+                saveCalendarEvents();
+                renderEvents();
+                renderCalendarPage();
+            }
+        }
+        
+        function deleteEvent(index) {
+            if (selectedDate && calendarEvents[selectedDate]) {
+                calendarEvents[selectedDate].splice(index, 1);
+                if (calendarEvents[selectedDate].length === 0) {
+                    delete calendarEvents[selectedDate];
+                }
+                saveCalendarEvents();
+                renderEvents();
+                renderCalendarPage();
+            }
         }
 
         // === 主題設定功能 ===
@@ -1243,9 +1427,14 @@
         const currentListTitle = document.getElementById('current-list-title');
         const pastTodoList = document.getElementById('past-todo-list');
         
-        let todoLists = [];
-        let activeListIndex = -1;
-        let pastTodoItems = [];
+        let todoLists = JSON.parse(localStorage.getItem('todoLists')) || [{ name: '預設清單', items: [] }];
+        let activeListIndex = 0;
+        let pastTodoItems = JSON.parse(localStorage.getItem('pastTodoItems')) || [];
+
+        function saveTodos() {
+            localStorage.setItem('todoLists', JSON.stringify(todoLists));
+            localStorage.setItem('pastTodoItems', JSON.stringify(pastTodoItems));
+        }
 
         function addList() {
             const listName = listCreateInput.value.trim();
@@ -1257,6 +1446,7 @@
                 listCreateInput.value = '';
                 renderLists();
                 selectList(todoLists.length - 1);
+                saveTodos();
             }
         }
         
@@ -1266,6 +1456,7 @@
                 todoLists[index].name = newName.trim();
                 renderLists();
                 currentListTitle.textContent = todoLists[index].name;
+                saveTodos();
             }
         }
 
@@ -1344,6 +1535,7 @@
                 todoDateInput.value = '';
                 todoTimeInput.value = '';
                 renderTodoItems();
+                saveTodos();
             }
         }
 
@@ -1353,11 +1545,13 @@
             pastTodoItems.push(item);
 
             renderTodoItems();
+            saveTodos();
         }
         
         function deleteTodo(button, index) {
             todoLists[activeListIndex].items.splice(index, 1);
             renderTodoItems();
+            saveTodos();
         }
         
         function renderPastTodoItems() {
@@ -1456,15 +1650,42 @@
         // === 時間線功能 ===
         const newTimelineInput = document.getElementById('new-timeline-input');
         const timelineList = document.getElementById('timeline-list');
+        
+        let timelines = JSON.parse(localStorage.getItem('timelines')) || [];
+        
+        function saveTimelines() {
+            localStorage.setItem('timelines', JSON.stringify(timelines));
+        }
 
-        function addTimeline() {
-            const timelineName = newTimelineInput.value.trim();
-            if (timelineName) {
+        function renderTimelines() {
+            timelineList.innerHTML = '';
+            timelines.forEach((timeline, timelineIndex) => {
                 const li = document.createElement('li');
                 li.className = 'timeline-item';
+                
+                let nodesHTML = '';
+                timeline.nodes.forEach((node, nodeIndex) => {
+                    let dateDisplay = '';
+                    if (node.date) {
+                        dateDisplay += node.date.replace(/-/g, '/');
+                    }
+                    if (node.time) {
+                        dateDisplay += (dateDisplay ? ' ' : '') + node.time;
+                    }
+                    nodesHTML += `
+                        <div class="timeline-node">
+                            <span>${node.text}</span>
+                            ${dateDisplay ? `<div class="timeline-node-date">${dateDisplay}</div>` : ''}
+                            <div class="timeline-node-actions">
+                                <button onclick="deleteTimelineNode(${timelineIndex}, ${nodeIndex})">✗</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
                 li.innerHTML = `
-                    <h3>${timelineName}</h3>
-                    <div class="timeline-nodes-container"></div>
+                    <h3>${timeline.name}</h3>
+                    <div class="timeline-nodes-container">${nodesHTML}</div>
                     <div class="timeline-node-input">
                         <input type="text" placeholder="新增節點工作..." class="node-text-input">
                         <div class="input-group">
@@ -1475,48 +1696,47 @@
                             <label>時間:</label>
                             <input type="time" class="node-time-input">
                         </div>
-                        <button class="add-button" onclick="addTimelineNode(this)">+</button>
+                        <button class="add-button" onclick="addTimelineNode(this, ${timelineIndex})">新增節點</button>
                     </div>
                 `;
                 timelineList.appendChild(li);
-                newTimelineInput.value = '';
-            }
+            });
         }
 
-        function addTimelineNode(button) {
-            const container = button.closest('.timeline-item').querySelector('.timeline-nodes-container');
+        function addTimeline() {
+            const timelineName = newTimelineInput.value.trim();
+            if (timelineName) {
+                timelines.push({
+                    name: timelineName,
+                    nodes: []
+                });
+                newTimelineInput.value = '';
+                renderTimelines();
+                saveTimelines();
+            }
+        }
+        
+        function addTimelineNode(button, timelineIndex) {
             const inputGroup = button.closest('.timeline-node-input');
             const nodeText = inputGroup.querySelector('.node-text-input').value.trim();
             const nodeDate = inputGroup.querySelector('.node-date-input').value;
             const nodeTime = inputGroup.querySelector('.node-time-input').value;
 
             if (nodeText) {
-                const nodeDiv = document.createElement('div');
-                nodeDiv.className = 'timeline-node';
-                let dateDisplay = '';
-                if (nodeDate) {
-                    dateDisplay += nodeDate.replace(/-/g, '/');
-                }
-                if (nodeTime) {
-                    dateDisplay += (dateDisplay ? ' ' : '') + nodeTime;
-                }
-                nodeDiv.innerHTML = `
-                    <span>${nodeText}</span>
-                    ${dateDisplay ? `<div class="timeline-node-date">${dateDisplay}</div>` : ''}
-                    <div class="timeline-node-actions">
-                        <button onclick="deleteTimelineNode(this)">✗</button>
-                    </div>
-                `;
-                container.appendChild(nodeDiv);
-                inputGroup.querySelector('.node-text-input').value = '';
-                inputGroup.querySelector('.node-date-input').value = '';
-                inputGroup.querySelector('.node-time-input').value = '';
+                timelines[timelineIndex].nodes.push({
+                    text: nodeText,
+                    date: nodeDate,
+                    time: nodeTime
+                });
+                renderTimelines();
+                saveTimelines();
             }
         }
         
-        function deleteTimelineNode(button) {
-            const node = button.closest('.timeline-node');
-            node.remove();
+        function deleteTimelineNode(timelineIndex, nodeIndex) {
+            timelines[timelineIndex].nodes.splice(nodeIndex, 1);
+            renderTimelines();
+            saveTimelines();
         }
 
 
@@ -1530,7 +1750,11 @@
         const habitTargetCountTotalInput = document.getElementById('habit-target-count-total');
         const habitList = document.getElementById('habit-list');
 
-        let habits = [];
+        let habits = JSON.parse(localStorage.getItem('habits')) || [];
+
+        function saveHabits() {
+            localStorage.setItem('habits', JSON.stringify(habits));
+        }
 
         function toggleHabitGoalOptions() {
             if (habitGoalTypeSelect.value === 'by-date') {
@@ -1586,6 +1810,7 @@
             habitTargetCountTotalInput.value = 100;
 
             renderHabits();
+            saveHabits();
         }
         
         function renderHabits(expandedIndex = -1) {
@@ -1665,12 +1890,14 @@
             if (newName && newName.trim() !== '') {
                 habits[index].name = newName.trim();
                 renderHabits();
+                saveHabits();
             }
         }
         
         function deleteHabit(index) {
             habits.splice(index, 1);
             renderHabits();
+            saveHabits();
         }
 
         function getCurrentHabitCount(habit) {
@@ -1741,6 +1968,7 @@
             }
             
             renderHabits(habitIndex); 
+            saveHabits();
         }
 
         // 頁面載入時初始化
@@ -1751,6 +1979,7 @@
             }
             renderLists();
             toggleHabitGoalOptions();
+            renderTimelines();
         });
     </script>
 </body>
