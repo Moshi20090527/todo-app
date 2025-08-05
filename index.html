@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>馬卡龍工作小幫手</title>
+    <title>todo 工作</title>
     <style>
         /* 馬卡龍色系變數 */
         :root {
@@ -30,11 +30,11 @@
             background-attachment: fixed;
             color: var(--text-color);
             margin: 0;
-            padding: 20px; /* 調整整體邊距 */
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            min-height: 100vh;
+            min-height: 10vh;
             position: relative;
         }
         
@@ -104,15 +104,15 @@
         /* 側邊菜單按鈕 */
         #menu-button {
             position: fixed;
-            top: 15px; /* 調整位置 */
-            left: 15px; /* 調整位置 */
+            top: 15px;
+            left: 15px;
             z-index: 100;
             background-color: var(--primary-color);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 45px; /* 調整大小 */
-            height: 45px; /* 調整大小 */
+            width: 45px;
+            height: 45px;
             font-size: 1.5em;
             cursor: pointer;
             box-shadow: 4px 4px 8px var(--shadow-color);
@@ -196,16 +196,16 @@
         .container {
             display: flex;
             flex-direction: column;
-            gap: 20px; /* 調整間距 */
+            gap: 20px;
             width: 100%;
             max-width: 1000px;
-            margin-top: 40px; /* 調整與頂部菜單按鈕的距離 */
+            margin-top: 40px;
         }
 
         .page {
             display: none;
             flex-direction: column;
-            gap: 15px; /* 調整間距 */
+            gap: 15px;
         }
 
         .page.active {
@@ -216,7 +216,7 @@
             background-color: var(--card-bg-color);
             border-radius: var(--border-radius-main);
             box-shadow: 0 6px 12px var(--shadow-color);
-            padding: 20px; /* 調整卡片內距 */
+            padding: 20px;
             transition: transform 0.2s, box-shadow 0.2s;
             width: 100%;
             box-sizing: border-box;
@@ -239,15 +239,15 @@
         #past-todo-page .card,
         #theme-settings .card,
         #calendar-page .card {
-            margin-top: 30px; /* 調整與頂部菜單按鈕的距離 */
+            margin-top: 30px;
         }
 
         h2 {
             margin-top: 0;
             color: var(--primary-color);
             text-align: center;
-            font-size: 1.5em; /* 調整字體大小 */
-            margin-bottom: 15px; /* 調整間距 */
+            font-size: 1.5em;
+            margin-bottom: 15px;
         }
         h3 {
              font-size: 1.2em;
@@ -255,16 +255,16 @@
 
         .navigation {
             display: flex;
-            gap: 10px; /* 調整間距 */
+            gap: 10px;
             justify-content: center;
-            margin-bottom: 20px; /* 調整間距 */
+            margin-bottom: 20px;
             flex-wrap: nowrap; 
             overflow-x: auto; 
             -webkit-overflow-scrolling: touch; 
         }
 
         .nav-button {
-            padding: 12px 20px; /* 調整按鈕內距 */
+            padding: 12px 20px;
             border-radius: var(--border-radius-button);
             background-color: var(--primary-color);
             color: white;
@@ -272,7 +272,7 @@
             font-weight: bold;
             transition: background-color 0.2s;
             cursor: pointer;
-            font-size: 1em; /* 調整字體大小 */
+            font-size: 1em;
             flex-shrink: 0; 
         }
         .nav-button:hover {
@@ -294,8 +294,8 @@
         .todo-input-group, .timeline-input-group, .list-create-group {
             display: flex;
             flex-direction: column;
-            gap: 10px; /* 調整間距 */
-            margin-bottom: 15px; /* 調整間距 */
+            gap: 10px;
+            margin-bottom: 15px;
         }
         
         .list-create-group {
@@ -309,7 +309,7 @@
         .todo-input-group input, .todo-input-group select, .add-button,
         .timeline-input-group input, .timeline-input-group button, .list-create-group input,
         .habit-input-group input, .habit-input-group select, .habit-input-group button {
-            padding: 12px; /* 調整內距 */
+            padding: 12px;
             border: 1px solid #ccc;
             border-radius: var(--border-radius-button);
             font-size: 1em;
@@ -349,17 +349,17 @@
         .todo-lists-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px; /* 調整間距 */
-            margin-bottom: 15px; /* 調整間距 */
+            gap: 8px;
+            margin-bottom: 15px;
         }
         .todo-list-tab {
-            padding: 8px 12px; /* 調整內距 */
+            padding: 8px 12px;
             border-radius: 8px;
             background-color: #E6EAF0;
             cursor: pointer;
             transition: background-color 0.2s;
             font-weight: bold;
-            font-size: 0.9em; /* 調整字體大小 */
+            font-size: 0.9em;
         }
         .todo-list-tab.active {
             background-color: var(--secondary-color);
@@ -382,13 +382,13 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 10px; /* 調整間距 */
+            gap: 10px;
         }
 
         .todo-item {
             background-color: #F8F9FA;
             border: 1px solid #eee;
-            padding: 15px; /* 調整內距 */
+            padding: 15px;
             border-radius: 12px;
             display: flex;
             justify-content: space-between;
@@ -414,7 +414,7 @@
         .past-todo-item {
              background-color: #E8F4F2;
              border: 1px solid #eee;
-             padding: 15px; /* 調整內距 */
+             padding: 15px;
              border-radius: 12px;
              text-decoration: line-through;
              color: #999;
@@ -428,15 +428,15 @@
 
         .todo-text {
             flex-grow: 1;
-            margin-right: 10px; /* 調整間距 */
+            margin-right: 10px;
         }
         .todo-item-info {
             display: flex;
             flex-direction: column;
-            font-size: 0.9em; /* 調整字體大小 */
+            font-size: 0.9em;
         }
         .todo-datetime {
-            font-size: 0.8em; /* 調整字體大小 */
+            font-size: 0.8em;
             color: #888;
             margin-top: 5px;
         }
@@ -445,8 +445,8 @@
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 1.2em; /* 調整字體大小 */
-            margin-left: 8px; /* 調整間距 */
+            font-size: 1.2em;
+            margin-left: 8px;
             color: #777;
             transition: color 0.2s;
         }
@@ -473,10 +473,10 @@
             align-items: center;
         }
         .todo-input-group label {
-            width: 40px; /* 調整寬度 */
+            width: 40px;
             font-weight: bold;
             color: var(--text-color);
-            font-size: 0.9em; /* 調整字體大小 */
+            font-size: 0.9em;
         }
         .todo-input-group input[type="date"],
         .todo-input-group input[type="time"] {
@@ -497,22 +497,22 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px; /* 調整間距 */
-            margin-bottom: 20px; /* 調整間距 */
+            gap: 10px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
         .pomodoro-settings label {
-            font-size: 1em; /* 調整字體大小 */
+            font-size: 1em;
         }
         .pomodoro-settings input {
-            width: 60px; /* 調整寬度 */
-            padding: 10px; /* 調整內距 */
-            font-size: 0.9em; /* 調整字體大小 */
+            width: 60px;
+            padding: 10px;
+            font-size: 0.9em;
         }
 
         #timer-display {
-            font-size: 4em; /* 調整字體大小 */
-            margin: 20px 0; /* 調整間距 */
+            font-size: 4em;
+            margin: 20px 0;
             font-weight: bold;
             color: var(--primary-color);
         }
@@ -520,18 +520,18 @@
         .timer-buttons {
             display: flex;
             justify-content: center;
-            gap: 15px; /* 調整間距 */
+            gap: 15px;
         }
         .timer-buttons button {
             background-color: var(--accent-color);
             border: none;
-            padding: 12px 25px; /* 調整內距 */
+            padding: 12px 25px;
             border-radius: var(--border-radius-button);
             cursor: pointer;
             color: white;
             font-weight: bold;
             transition: background-color 0.2s;
-            font-size: 1em; /* 調整字體大小 */
+            font-size: 1em;
             font-family: var(--font-family-main);
         }
 
@@ -554,9 +554,9 @@
         /* 時間線樣式 */
         .timeline-item {
             position: relative;
-            padding-left: 30px; /* 調整內距 */
+            padding-left: 30px;
             border-left: 3px solid var(--primary-color);
-            margin-left: 10px; /* 調整間距 */
+            margin-left: 10px;
         }
         .theme-pixel .timeline-item {
             border-left: 4px solid var(--primary-color);
@@ -565,27 +565,27 @@
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -8px; /* 調整位置 */
+            left: -8px;
             top: 0;
-            width: 15px; /* 調整大小 */
-            height: 15px; /* 調整大小 */
+            width: 15px;
+            height: 15px;
             background-color: var(--primary-color);
             border: 3px solid var(--background-color);
             border-radius: 50%;
         }
         .theme-pixel .timeline-item::before {
             border-radius: 0;
-            width: 12px; /* 調整大小 */
-            height: 12px; /* 調整大小 */
-            left: -10px; /* 調整位置 */
+            width: 12px;
+            height: 12px;
+            left: -10px;
             border: 4px solid var(--card-bg-color);
         }
 
         .timeline-node {
             background-color: #F8F9FA;
-            padding: 12px; /* 調整內距 */
+            padding: 12px;
             border-radius: 10px;
-            margin-bottom: 10px; /* 調整間距 */
+            margin-bottom: 10px;
             border-left: 4px solid var(--secondary-color);
         }
         .theme-pixel .timeline-node {
@@ -596,7 +596,7 @@
             box-shadow: 2px 2px 0 var(--text-color);
         }
         .timeline-node-date {
-            font-size: 0.8em; /* 調整字體大小 */
+            font-size: 0.8em;
             color: #888;
             margin-top: 5px;
         }
@@ -607,8 +607,8 @@
         .timeline-node-input {
             display: flex;
             flex-direction: column;
-            gap: 8px; /* 調整間距 */
-            margin-top: 10px; /* 調整間距 */
+            gap: 8px;
+            margin-top: 10px;
         }
         .timeline-node-input .input-group {
             display: flex;
@@ -616,14 +616,14 @@
             align-items: center;
         }
         .timeline-node-input label {
-            width: 40px; /* 調整寬度 */
+            width: 40px;
             font-weight: bold;
             color: var(--text-color);
             font-size: 0.9em;
         }
         .timeline-node-input input {
             flex-grow: 1;
-            padding: 10px; /* 調整內距 */
+            padding: 10px;
             border-radius: 8px;
             border: 1px solid #ccc;
         }
@@ -644,8 +644,8 @@
         .habit-input-group {
             display: flex;
             flex-direction: column;
-            gap: 10px; /* 調整間距 */
-            margin-bottom: 15px; /* 調整間距 */
+            gap: 10px;
+            margin-bottom: 15px;
         }
         #by-date-options {
             display: flex;
@@ -657,10 +657,10 @@
             gap: 10px;
         }
         #habit-target-count-date {
-            padding: 8px; /* 調整內距 */
+            padding: 8px;
         }
         #habit-end-date {
-            padding: 10px; /* 調整內距 */
+            padding: 10px;
         }
         .theme-pixel #habit-end-date {
             background-color: var(--background-color);
@@ -669,27 +669,27 @@
 
         /* 習慣項目抽屜樣式 */
         .habit-item {
-            margin-bottom: 10px; /* 調整間距 */
+            margin-bottom: 10px;
         }
 
         .habit-item-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px; /* 調整內距 */
+            padding: 10px 15px;
             border-radius: 12px;
             background-color: #F8F9FA;
             cursor: pointer;
             transition: background-color 0.2s;
             border: 1px solid #eee;
-            overflow: hidden; 
+            overflow: hidden;
             min-height: 2px;
         }
         .habit-item-header:hover {
             background-color: var(--list-item-hover);
         }
         .habit-item-header.expanded {
-            padding: 15px; /* 調整內距 */
+            padding: 15px;
             border-radius: 12px 12px 0 0;
             border-bottom: none;
             min-height: auto;
@@ -711,11 +711,11 @@
         }
         .habit-title-container h3 {
             margin: 0;
-            font-size: 1.1em; /* 調整字體大小 */
+            font-size: 1.1em;
         }
 
         .habit-item-content {
-            padding: 0 15px; /* 調整內距 */
+            padding: 0 15px;
             border: 1px solid #eee;
             border-top: none;
             border-radius: 0 0 12px 12px;
@@ -723,7 +723,7 @@
             overflow: hidden;
             max-height: 0;
             transition: max-height 0.4s ease-out, padding 0.4s ease-out;
-            box-sizing: border-box; 
+            box-sizing: border-box;
         }
         .theme-pixel .habit-item-content {
             border-radius: 0;
@@ -733,8 +733,8 @@
         }
 
         .habit-item-content.expanded {
-            padding: 15px; /* 調整內距 */
-            max-height: 500px; 
+            padding: 15px;
+            max-height: 500px;
         }
 
         .habit-progress-container {
@@ -742,8 +742,8 @@
             background-color: #e0e0e0;
             border-radius: 8px;
             overflow: hidden;
-            margin-top: 8px; /* 調整間距 */
-            margin-bottom: 15px; /* 調整間距 */
+            margin-top: 8px;
+            margin-bottom: 15px;
         }
         .theme-pixel .habit-progress-container {
             border-radius: 0;
@@ -752,12 +752,12 @@
         }
 
         .habit-progress-bar {
-            height: 18px; /* 調整高度 */
+            height: 18px;
             background-color: var(--primary-color);
             text-align: center;
             line-height: 18px;
             color: white;
-            font-size: 0.7em; /* 調整字體大小 */
+            font-size: 0.7em;
             transition: width 0.4s ease;
         }
         .theme-pixel .habit-progress-bar {
@@ -766,19 +766,19 @@
 
         /* 日曆整體樣式調整 (調整為更小) */
         .habit-calendar-wrapper, .calendar-wrapper {
-            max-width: 100%; /* 讓它在小螢幕上填滿 */
+            max-width: 100%;
             margin: 0 auto;
         }
         .habit-calendar-nav, .calendar-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px; /* 縮小間距 */
+            margin-bottom: 8px;
         }
         .habit-calendar-nav button, .calendar-nav button {
             background: none;
             border: none;
-            font-size: 1.1em; /* 縮小字體 */
+            font-size: 1.1em;
             cursor: pointer;
             color: var(--primary-color);
             transition: color 0.2s;
@@ -793,7 +793,7 @@
         .habit-calendar-nav span, .calendar-nav h3 {
             font-weight: bold;
             color: var(--primary-color);
-            font-size: 1em; /* 縮小字體 */
+            font-size: 1em;
             margin: 0;
         }
         .theme-pixel .habit-calendar-nav span, .theme-pixel .calendar-nav h3 {
@@ -802,17 +802,17 @@
         .habit-calendar-grid, .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 2px; /* 縮小間距 */
+            gap: 2px;
             text-align: center;
         }
         .habit-calendar-grid > div, .calendar-grid > div {
-            padding: 6px; /* 縮小內距 */
-            border-radius: 6px; /* 縮小圓角 */
+            padding: 6px;
+            border-radius: 6px;
             background-color: #E6EAF0;
             cursor: pointer;
             transition: background-color 0.2s, transform 0.2s;
             position: relative;
-            font-size: 0.8em; /* 縮小字體 */
+            font-size: 0.8em;
             user-select: none;
         }
         .theme-pixel .habit-calendar-grid > div, .theme-pixel .calendar-grid > div {
@@ -860,6 +860,17 @@
             background-color: var(--secondary-color);
             color: white;
             font-weight: bold;
+            position: relative;
+        }
+        .habit-calendar-grid .achieved::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.5em;
+            line-height: 1;
         }
         .habit-calendar-grid .missed {
             background-color: #FFC0CB;
@@ -869,11 +880,11 @@
         .has-event::after {
             content: '';
             position: absolute;
-            bottom: 4px; /* 調整位置 */
+            bottom: 4px;
             left: 50%;
             transform: translateX(-50%);
-            width: 5px; /* 縮小尺寸 */
-            height: 5px; /* 縮小尺寸 */
+            width: 5px;
+            height: 5px;
             background-color: var(--secondary-color);
             border-radius: 50%;
         }
@@ -882,8 +893,8 @@
             border: 1px solid var(--text-color);
         }
         #calendar-events {
-            margin-top: 15px; /* 調整間距 */
-            padding: 12px; /* 調整內距 */
+            margin-top: 15px;
+            padding: 12px;
             border-radius: 10px;
             background-color: #F8F9FA;
         }
@@ -898,7 +909,7 @@
         }
         #calendar-events li {
             background-color: #E6EAF0;
-            padding: 8px; /* 調整內距 */
+            padding: 8px;
             border-radius: 8px;
             margin-bottom: 5px;
             display: flex;
@@ -908,12 +919,12 @@
         }
         #add-event-form {
             display: flex;
-            gap: 8px; /* 調整間距 */
-            margin-top: 10px; /* 調整間距 */
+            gap: 8px;
+            margin-top: 10px;
         }
         #add-event-form input {
             flex-grow: 1;
-            padding: 8px; /* 調整內距 */
+            padding: 8px;
             border-radius: 8px;
             border: 1px solid #ccc;
         }
@@ -925,19 +936,19 @@
         /* === 主題設定頁面樣式 === */
         .theme-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* 調整最小寬度 */
-            gap: 15px; /* 調整間距 */
-            margin-bottom: 20px; /* 調整間距 */
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
         .theme-option {
-            height: 70px; /* 調整高度 */
+            height: 70px;
             border-radius: var(--border-radius-main);
             cursor: pointer;
             border: 3px solid transparent;
             display: flex;
             align-items: flex-end;
             justify-content: center;
-            padding: 8px; /* 調整內距 */
+            padding: 8px;
             font-weight: bold;
             color: white;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -975,12 +986,12 @@
         .custom-options {
             display: flex;
             flex-direction: column;
-            gap: 15px; /* 調整間距 */
+            gap: 15px;
         }
         .custom-image-option input[type="file"] {
             display: block;
-            margin-top: 8px; /* 調整間距 */
-            margin-bottom: 8px; 
+            margin-top: 8px;
+            margin-bottom: 8px;
             font-size: 0.9em;
         }
         .custom-color-option {
@@ -998,8 +1009,8 @@
             font-size: 0.9em;
         }
         .color-input-group input[type="color"] {
-            width: 40px; /* 調整尺寸 */
-            height: 40px; /* 調整尺寸 */
+            width: 40px;
+            height: 40px;
             border: none;
             cursor: pointer;
         }
@@ -1693,7 +1704,7 @@
             setTimeout(() => {
                 alarmSound.pause();
                 alarmSound.currentTime = 0; 
-            }, 3000); // 3秒後停止
+            }, 3000);
         }
 
         function startTimer() {
@@ -2055,6 +2066,7 @@
                 const status = habit.completedDays[date];
                 
                 let className = `${isToday ? 'today' : ''}`;
+                
                 if (status === 'achieved') {
                     className += ' achieved';
                 } else if (status === 'missed') {
@@ -2112,20 +2124,17 @@
 
         function toggleHabitCompletion(event, habitIndex, date) {
             const habit = habits[habitIndex];
-            const dayElement = document.querySelector(`#habit-calendar-${habitIndex} [data-date="${date}"]`);
-
-            if (!dayElement || dayElement.classList.contains('day-name') || dayElement.classList.contains('empty-day')) {
-                return;
-            }
+            const dayElement = event.currentTarget; // 使用 event.currentTarget 確保取得正確的元素
+            const currentStatus = habit.completedDays[date];
 
             if (event.button === 0) { // 左鍵單擊
-                if (habit.completedDays[date] === 'achieved') {
+                if (currentStatus === 'achieved') {
                     delete habit.completedDays[date];
                 } else {
                     habit.completedDays[date] = 'achieved';
                 }
             } else if (event.button === 2) { // 右鍵雙擊 (contextmenu)
-                if (habit.completedDays[date] === 'missed') {
+                if (currentStatus === 'missed') {
                     delete habit.completedDays[date];
                 } else {
                     habit.completedDays[date] = 'missed';
@@ -2135,13 +2144,10 @@
             saveHabits();
             
             // 根據狀態更新 class
-            if (dayElement) {
-                dayElement.classList.remove('achieved', 'missed');
-                if (habit.completedDays[date] === 'achieved') {
-                    dayElement.classList.add('achieved');
-                } else if (habit.completedDays[date] === 'missed') {
-                    dayElement.classList.add('missed');
-                }
+            dayElement.classList.remove('achieved', 'missed');
+            const newStatus = habit.completedDays[date];
+            if (newStatus) {
+                dayElement.classList.add(newStatus);
             }
 
             // 更新進度條
