@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>todo 工作</title>
+    <title>馬卡龍工作小幫手</title>
     <style>
         /* 馬卡龍色系變數 */
         :root {
@@ -561,6 +561,11 @@
         .theme-pixel .timeline-item {
             border-left: 4px solid var(--primary-color);
         }
+        
+        .timeline-item h3 {
+             cursor: pointer;
+             display: inline-block;
+        }
 
         .timeline-item::before {
             content: '';
@@ -587,6 +592,12 @@
             border-radius: 10px;
             margin-bottom: 10px;
             border-left: 4px solid var(--secondary-color);
+            cursor: pointer; /* 新增 */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .timeline-node:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
         .theme-pixel .timeline-node {
             border-radius: 0;
@@ -595,6 +606,11 @@
             border: 2px solid var(--text-color);
             box-shadow: 2px 2px 0 var(--text-color);
         }
+        .theme-pixel .timeline-node:hover {
+             transform: translate(2px, 2px);
+             box-shadow: 0 0 0 var(--text-color);
+        }
+
         .timeline-node-date {
             font-size: 0.8em;
             color: #888;
@@ -871,11 +887,6 @@
             color: white;
             font-size: 1.5em;
             line-height: 1;
-        }
-        .habit-calendar-grid .missed {
-            background-color: #FFC0CB;
-            color: white;
-            font-weight: bold;
         }
         .has-event::after {
             content: '';
@@ -1303,7 +1314,13 @@
             showPage('calendar-page');
             renderCalendarPage();
         }
-
+        
+        function showThemeSettings() {
+            toggleMenu();
+            showPage('theme-settings');
+            highlightActiveTheme();
+        }
+        
         // === 日曆功能 ===
         const calendarGrid = document.getElementById('calendar-grid');
         const currentMonthYear = document.getElementById('current-month-year');
@@ -1419,19 +1436,12 @@
         }
 
         // === 主題設定功能 ===
-        function showThemeSettings() {
-            toggleMenu();
-            showPage('theme-settings');
-            highlightActiveTheme();
-        }
-        
         function applyTheme(themeName) {
             const body = document.body;
             body.className = ''; 
             body.classList.add(`theme-${themeName}`);
             document.documentElement.style.setProperty('--body-bg-image', 'none'); 
             
-            // 清除自訂顏色的 inline style
             document.documentElement.style.removeProperty('--primary-color');
             document.documentElement.style.removeProperty('--secondary-color');
             document.documentElement.style.removeProperty('--card-bg-color');
@@ -1774,18 +1784,15 @@
                         dateDisplay += (dateDisplay ? ' ' : '') + node.time;
                     }
                     nodesHTML += `
-                        <div class="timeline-node">
+                        <div class="timeline-node" ondblclick="editTimelineNode(${timelineIndex}, ${nodeIndex})">
                             <span>${node.text}</span>
                             ${dateDisplay ? `<div class="timeline-node-date">${dateDisplay}</div>` : ''}
-                            <div class="timeline-node-actions">
-                                <button onclick="deleteTimelineNode(${timelineIndex}, ${nodeIndex})">✗</button>
-                            </div>
                         </div>
                     `;
                 });
 
                 li.innerHTML = `
-                    <h3>${timeline.name}</h3>
+                    <h3 ondblclick="manageTimeline(${timelineIndex})">${timeline.name}</h3>
                     <div class="timeline-nodes-container">${nodesHTML}</div>
                     <div class="timeline-node-input">
                         <input type="text" placeholder="新增節點工作..." class="node-text-input">
@@ -1802,6 +1809,33 @@
                 `;
                 timelineList.appendChild(li);
             });
+        }
+        
+        function manageTimeline(timelineIndex) {
+            const action = prompt('請選擇動作：\n1. 編輯時間線名稱\n2. 刪除時間線', '1');
+            
+            if (action === '1') {
+                renameTimeline(timelineIndex);
+            } else if (action === '2') {
+                deleteTimeline(timelineIndex);
+            }
+        }
+        
+        function renameTimeline(timelineIndex) {
+            const newName = prompt('請輸入新的時間線名稱：', timelines[timelineIndex].name);
+            if (newName && newName.trim() !== '') {
+                timelines[timelineIndex].name = newName.trim();
+                renderTimelines();
+                saveTimelines();
+            }
+        }
+        
+        function deleteTimeline(timelineIndex) {
+            if (confirm('確定要刪除此時間線及其所有節點嗎？')) {
+                timelines.splice(timelineIndex, 1);
+                renderTimelines();
+                saveTimelines();
+            }
         }
 
         function addTimeline() {
@@ -1831,6 +1865,26 @@
                 });
                 renderTimelines();
                 saveTimelines();
+            }
+        }
+        
+        function editTimelineNode(timelineIndex, nodeIndex) {
+            const action = prompt('請選擇動作：\n1. 編輯節點\n2. 刪除節點', '1');
+            
+            if (action === '1') {
+                const currentNode = timelines[timelineIndex].nodes[nodeIndex];
+                const newText = prompt('請輸入新的節點內容：', currentNode.text);
+                if (newText && newText.trim() !== '') {
+                    currentNode.text = newText.trim();
+                    renderTimelines();
+                    saveTimelines();
+                }
+            } else if (action === '2') {
+                if (confirm('確定要刪除此節點嗎？')) {
+                    timelines[timelineIndex].nodes.splice(nodeIndex, 1);
+                    renderTimelines();
+                    saveTimelines();
+                }
             }
         }
         
@@ -2007,14 +2061,11 @@
 
         function getCurrentHabitCount(habit) {
             let count = 0;
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            
             for (const date in habit.completedDays) {
-                const checkDate = new Date(date);
-                checkDate.setHours(0, 0, 0, 0);
-
                 if (habit.completedDays[date] === 'achieved') {
+                    const checkDate = new Date(date);
+                    checkDate.setHours(0, 0, 0, 0);
+
                     if (habit.goalType === 'by-date') {
                         const endDate = new Date(habit.endDate);
                         endDate.setHours(0, 0, 0, 0);
@@ -2069,14 +2120,11 @@
                 
                 if (status === 'achieved') {
                     className += ' achieved';
-                } else if (status === 'missed') {
-                    className += ' missed';
                 }
                 
                 calendarHTML += `<div class="${className}" 
                                      data-date="${date}"
-                                     onmousedown="event.preventDefault(); toggleHabitCompletion(event, ${habitIndex}, '${date}')" 
-                                     oncontextmenu="event.preventDefault(); toggleHabitCompletion(event, ${habitIndex}, '${date}')">
+                                     onclick="toggleHabitCompletion(event, ${habitIndex}, '${date}')">
                                      ${day}
                                  </div>`;
             }
@@ -2124,33 +2172,25 @@
 
         function toggleHabitCompletion(event, habitIndex, date) {
             const habit = habits[habitIndex];
-            const dayElement = event.currentTarget; // 使用 event.currentTarget 確保取得正確的元素
+            const dayElement = event.currentTarget;
             const currentStatus = habit.completedDays[date];
 
-            if (event.button === 0) { // 左鍵單擊
+            if (event.button === 0) {
                 if (currentStatus === 'achieved') {
                     delete habit.completedDays[date];
                 } else {
                     habit.completedDays[date] = 'achieved';
                 }
-            } else if (event.button === 2) { // 右鍵雙擊 (contextmenu)
-                if (currentStatus === 'missed') {
-                    delete habit.completedDays[date];
-                } else {
-                    habit.completedDays[date] = 'missed';
-                }
             }
 
             saveHabits();
             
-            // 根據狀態更新 class
-            dayElement.classList.remove('achieved', 'missed');
+            dayElement.classList.remove('achieved');
             const newStatus = habit.completedDays[date];
             if (newStatus) {
                 dayElement.classList.add(newStatus);
             }
 
-            // 更新進度條
             updateHabitProgressBar(habitIndex);
         }
 
