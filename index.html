@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>todo app</title>
+    <title>馬卡龍工作小幫手</title>
     <style>
         /* 馬卡龍色系變數 */
         :root {
@@ -27,6 +27,74 @@
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
+            position: relative; /* 為了菜單按鈕定位 */
+        }
+
+        /* 側邊菜單按鈕 */
+        #menu-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        #menu-button:hover {
+            transform: scale(1.1);
+            background-color: #93B8C7;
+        }
+
+        /* 側邊菜單 */
+        #main-menu {
+            position: fixed;
+            top: 0;
+            left: -300px; /* 初始隱藏 */
+            width: 250px;
+            height: 100%;
+            background-color: var(--card-bg-color);
+            box-shadow: 2px 0 10px var(--shadow-color);
+            z-index: 99;
+            transition: left 0.3s ease-in-out;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        #main-menu.open {
+            left: 0;
+        }
+        .menu-item {
+            padding: 15px;
+            background-color: var(--background-color);
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .menu-item:hover {
+            background-color: var(--list-item-hover);
+        }
+        #menu-close {
+            text-align: right;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #888;
+        }
+        /* 新增的樣式，調整菜單項目間距 */
+        .menu-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px; /* 新增的間距 */
         }
 
         .container {
@@ -35,6 +103,7 @@
             gap: 30px;
             width: 100%;
             max-width: 1000px;
+            margin-top: 50px; /* 避免內容被菜單按鈕遮擋 */
         }
 
         .page {
@@ -60,6 +129,11 @@
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px var(--shadow-color);
+        }
+        
+        /* 針對過往待辦頁面的白色背景框新增間距 */
+        #past-todo-page .card {
+            margin-top: 50px; 
         }
 
         h2 {
@@ -92,7 +166,6 @@
             font-size: 1.1em;
             flex-shrink: 0; 
         }
-
         .nav-button:hover {
             background-color: #93B8C7;
         }
@@ -153,7 +226,7 @@
             color: white;
         }
 
-        .todo-list, .timeline-list, .habit-list {
+        .todo-list, .timeline-list, .habit-list, .past-todo-list {
             list-style: none;
             padding: 0;
             margin: 0;
@@ -180,6 +253,15 @@
             background-color: #E8F4F2;
             text-decoration: line-through;
             color: #999;
+        }
+        
+        .past-todo-item {
+             background-color: #E8F4F2;
+             border: 1px solid #eee;
+             padding: 20px;
+             border-radius: 12px;
+             text-decoration: line-through;
+             color: #999;
         }
 
         .todo-text {
@@ -536,6 +618,15 @@
     </style>
 </head>
 <body>
+    
+    <button id="menu-button" onclick="toggleMenu()">☰</button>
+
+    <div id="main-menu">
+        <span id="menu-close" onclick="toggleMenu()">✕</span>
+        <div class="menu-items-container">
+            <div class="menu-item" onclick="showPastTodos()">查看過往待辦</div>
+            </div>
+    </div>
 
     <div class="container">
         <div class="navigation">
@@ -578,6 +669,14 @@
                 </div>
 
                 <ul class="todo-list" id="todo-list"></ul>
+            </div>
+        </div>
+        
+        <div id="past-todo-page" class="page">
+            <div class="card">
+                <button class="nav-button" style="padding: 10px 20px; font-size: 1em; margin-top: -10px;" onclick="showPage('todo')">返回待辦清單</button>
+                <h2>過往待辦事項</h2>
+                <ul class="past-todo-list" id="past-todo-list"></ul>
             </div>
         </div>
 
@@ -653,6 +752,26 @@
                 page.classList.remove('active');
             });
             document.getElementById(pageId).classList.add('active');
+
+            // 根據頁面顯示或隱藏主導航
+            const nav = document.querySelector('.navigation');
+            if (pageId === 'past-todo-page') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+            }
+        }
+
+        // === 菜單功能 ===
+        const mainMenu = document.getElementById('main-menu');
+        function toggleMenu() {
+            mainMenu.classList.toggle('open');
+        }
+
+        function showPastTodos() {
+            toggleMenu();
+            showPage('past-todo-page');
+            renderPastTodoItems();
         }
 
         // === 待辦事項功能 ===
@@ -665,9 +784,11 @@
         const listsContainer = document.getElementById('todo-lists-container');
         const todoInputSection = document.getElementById('todo-input-section');
         const currentListTitle = document.getElementById('current-list-title');
+        const pastTodoList = document.getElementById('past-todo-list');
         
         let todoLists = [];
         let activeListIndex = -1;
+        let pastTodoItems = [];
 
         function addList() {
             const listName = listCreateInput.value.trim();
@@ -717,13 +838,13 @@
         function renderTodoItems() {
             todoList.innerHTML = '';
             if (activeListIndex !== -1) {
-                todoLists[activeListIndex].items.forEach(item => {
-                    createTodoItem(item.text, item.quadrant, item.completed, item.date, item.time);
+                todoLists[activeListIndex].items.forEach((item, index) => {
+                    createTodoItem(item.text, item.quadrant, item.completed, item.date, item.time, index);
                 });
             }
         }
 
-        function createTodoItem(text, quadrant, isCompleted = false, date = '', time = '') {
+        function createTodoItem(text, quadrant, isCompleted = false, date = '', time = '', index = -1) {
             const li = document.createElement('li');
             li.className = `todo-item quadrant-${quadrant}`;
             if (isCompleted) li.classList.add('completed');
@@ -741,8 +862,8 @@
                     ${dateTimeDisplay}
                 </div>
                 <div class="todo-actions">
-                    <button onclick="toggleCompleted(this)">✓</button>
-                    <button onclick="deleteTodo(this)">✗</button>
+                    <button onclick="toggleCompleted(this, ${index})">✓</button>
+                    <button onclick="deleteTodo(this, ${index})">✗</button>
                 </div>
             `;
             todoList.appendChild(li);
@@ -769,28 +890,40 @@
             }
         }
 
-        function toggleCompleted(button) {
-            const li = button.closest('.todo-item');
-            const itemText = li.querySelector('.todo-item-info .todo-text').textContent;
-            
-            li.classList.toggle('completed');
+        function toggleCompleted(button, index) {
+            const item = todoLists[activeListIndex].items.splice(index, 1)[0];
+            item.completed = true;
+            pastTodoItems.push(item);
 
-            const itemIndex = todoLists[activeListIndex].items.findIndex(item => item.text === itemText);
-            if (itemIndex !== -1) {
-                todoLists[activeListIndex].items[itemIndex].completed = li.classList.contains('completed');
-            }
+            renderTodoItems();
+        }
+        
+        function deleteTodo(button, index) {
+            todoLists[activeListIndex].items.splice(index, 1);
+            renderTodoItems();
+        }
+        
+        function renderPastTodoItems() {
+            pastTodoList.innerHTML = '';
+            pastTodoItems.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'past-todo-item';
+                let dateTimeDisplay = '';
+                if (item.date || item.time) {
+                    const datePart = item.date ? item.date.replace(/-/g, '/') : '';
+                    const timePart = item.time ? item.time : '';
+                    dateTimeDisplay = `<div class="todo-datetime">${datePart} ${timePart}</div>`;
+                }
+                li.innerHTML = `
+                    <div class="todo-item-info">
+                        <span class="todo-text">${item.text}</span>
+                        ${dateTimeDisplay}
+                    </div>
+                `;
+                pastTodoList.appendChild(li);
+            });
         }
 
-        function deleteTodo(button) {
-            const li = button.closest('.todo-item');
-            const itemText = li.querySelector('.todo-item-info .todo-text').textContent;
-
-            const itemIndex = todoLists[activeListIndex].items.findIndex(item => item.text === itemText);
-            if (itemIndex !== -1) {
-                todoLists[activeListIndex].items.splice(itemIndex, 1);
-            }
-            li.remove();
-        }
 
         // === 番茄鐘功能 ===
         const timerDisplay = document.getElementById('timer-display');
@@ -1033,7 +1166,6 @@
                 `;
                 habitList.appendChild(habitItem);
 
-                // 如果是需要展開的項目，則展開它
                 if (index === expandedIndex) {
                     habitItem.querySelector('.habit-item-header').classList.add('expanded');
                     habitItem.querySelector('.habit-item-content').classList.add('expanded');
@@ -1046,7 +1178,6 @@
             const allContent = document.querySelectorAll('.habit-item-content');
             const allHeaders = document.querySelectorAll('.habit-item-header');
 
-            // 收合所有其他抽屜
             allContent.forEach(item => {
                 if (item !== content) {
                     item.classList.remove('expanded');
@@ -1058,7 +1189,6 @@
                 }
             });
 
-            // 展開或收合當前抽屜
             content.classList.toggle('expanded');
             header.classList.toggle('expanded');
         }
@@ -1143,7 +1273,7 @@
                 habit.completedDays[date] = true;
             }
             
-            renderHabits(habitIndex); // 重新渲染並保持當前項目展開
+            renderHabits(habitIndex); 
         }
 
         // 頁面載入時初始化
