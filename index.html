@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todo app</title>
+    <style>
+        /* 馬卡龍色系變數 */
+        :root {
+            --primary-color: #A9D6E5; /* 淡藍 */
+            --secondary-color: #92E6C2; /* 薄荷綠 */
+            --accent-color: #F7C6D9; /* 櫻花粉 */
+            --text-color: #333;
+            --background-color: #F4F8FA;
+            --card-bg-color: #FFFFFF;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --list-item-hover: #F0F4F7;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .page {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .page.active {
+            display: flex;
+        }
+
+        .card {
+            background-color: var(--card-bg-color);
+            border-radius: 20px;
+            box-shadow: 0 6px 12px var(--shadow-color);
+            padding: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px var(--shadow-color);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .navigation {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: nowrap; 
+            overflow-x: auto; 
+            -webkit-overflow-scrolling: touch; 
+        }
+
+        .nav-button {
+            padding: 15px 25px;
+            border-radius: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            cursor: pointer;
+            font-size: 1.1em;
+            flex-shrink: 0; 
+        }
+
+        .nav-button:hover {
+            background-color: #93B8C7;
+        }
+
+        /* 待辦事項樣式 */
+        .todo-input-group, .timeline-input-group, .list-create-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .list-create-group {
+            flex-direction: row;
+            gap: 10px;
+        }
+        .list-create-group input {
+            flex-grow: 1;
+        }
+
+        .todo-input-group input, .todo-input-group select, .add-button,
+        .timeline-input-group input, .timeline-input-group button, .list-create-group input {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+        
+        .add-button {
+            background-color: var(--secondary-color);
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+
+        .add-button:hover {
+            background-color: #7AD9A5;
+        }
+        
+        .todo-lists-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .todo-list-tab {
+            padding: 10px 15px;
+            border-radius: 8px;
+            background-color: #E6EAF0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-weight: bold;
+        }
+        .todo-list-tab.active {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .todo-list, .timeline-list, .habit-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .todo-item {
+            background-color: #F8F9FA;
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+        .todo-item:hover {
+            background-color: var(--list-item-hover);
+        }
+
+        .todo-item.completed {
+            background-color: #E8F4F2;
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .todo-text {
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+        .todo-item-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .todo-datetime {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .todo-actions button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.4em;
+            margin-left: 10px;
+            color: #777;
+            transition: color 0.2s;
+        }
+
+        .todo-actions button:hover {
+            color: var(--primary-color);
+        }
+        
+        .todo-item.quadrant-1 { border-left: 6px solid #FF6B6B; }
+        .todo-item.quadrant-2 { border-left: 6px solid #6BE879; }
+        .todo-item.quadrant-3 { border-left: 6px solid #F0B429; }
+        .todo-item.quadrant-4 { border-left: 6px solid #6A86FF; }
+
+        .todo-input-group .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .todo-input-group label {
+            width: 50px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .todo-input-group input[type="date"],
+        .todo-input-group input[type="time"] {
+            background-color: #E8F4F2; /* 薄荷綠 */
+        }
+
+
+        /* 番茄鐘樣式 */
+        .pomodoro-timer {
+            text-align: center;
+        }
+
+        .pomodoro-settings {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .pomodoro-settings label {
+            font-size: 1.1em;
+        }
+        .pomodoro-settings input {
+            width: 80px;
+            padding: 12px;
+            font-size: 1em;
+        }
+
+        #timer-display {
+            font-size: 5em;
+            margin: 30px 0;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px; 
+        }
+        .timer-buttons button {
+            background-color: var(--accent-color);
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            font-size: 1.1em;
+        }
+
+        .timer-buttons button:hover {
+            background-color: #E0A6C7;
+        }
+
+        /* 時間線樣式 */
+        .timeline-item {
+            position: relative;
+            padding-left: 40px;
+            border-left: 3px solid var(--primary-color);
+            margin-left: 15px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 0;
+            width: 18px;
+            height: 18px;
+            background-color: var(--primary-color);
+            border: 3px solid var(--background-color);
+            border-radius: 50%;
+        }
+
+        .timeline-node {
+            background-color: #F8F9FA;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--secondary-color);
+        }
+        .timeline-node-date {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .timeline-node-input {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .timeline-node-input .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .timeline-node-input label {
+            width: 50px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .timeline-node-input input {
+            flex-grow: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        .timeline-node-input input[type="date"],
+        .timeline-node-input input[type="time"] {
+            padding: 12px;
+            background-color: #E8F4F2; /* 薄荷綠 */
+        }
+        .timeline-node-input .add-button {
+            flex-grow: 1;
+        }
+
+        /* 習慣追蹤樣式 */
+        .habit-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .habit-input-group input, .habit-input-group select, .habit-input-group button {
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+        .habit-input-group .input-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .habit-input-group .input-row input,
+        .habit-input-group .input-row select {
+            flex-grow: 1;
+        }
+
+        /* 指定日期選項的間距和高度調整 */
+        #by-date-options {
+            display: flex;
+            flex-direction: column;
+            gap: 4px; /* 目標次數與結束日期間隔 */
+        }
+        #by-date-options .input-row {
+            align-items: center;
+            gap: 10px;
+        }
+        #habit-target-count-date {
+            padding: 10px; /* 縮小目標次數輸入框高度 */
+        }
+        #habit-end-date {
+            padding: 12px; /* 保持結束日期輸入框高度 */
+        }
+
+
+        /* 習慣項目抽屜樣式 */
+        .habit-item {
+            margin-bottom: 15px;
+        }
+
+        .habit-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px; 
+            border-radius: 12px;
+            background-color: #F8F9FA;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: 1px solid #eee;
+            overflow: hidden; 
+            min-height: 2px;
+        }
+        .habit-item-header:hover {
+            background-color: var(--list-item-hover);
+        }
+        .habit-item-header.expanded {
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            border-bottom: none;
+            min-height: auto;
+        }
+        .habit-item-header h3 {
+            margin: 0;
+            padding: 0;
+        }
+
+        .habit-title-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .habit-title-container h3 {
+            margin: 0;
+        }
+
+        .habit-item-content {
+            padding: 0 20px;
+            border: 1px solid #eee;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            background-color: #F8F9FA;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            box-sizing: border-box; 
+        }
+
+        .habit-item-content.expanded {
+            padding: 20px;
+            max-height: 500px; 
+        }
+
+        .habit-progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .habit-progress-bar {
+            height: 20px;
+            background-color: var(--primary-color);
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            font-size: 0.8em;
+            transition: width 0.4s ease;
+        }
+
+        /* 日曆整體樣式調整 */
+        .habit-calendar-wrapper {
+            max-width: 300px; /* 限制日曆最大寬度 */
+            margin: 0 auto;
+        }
+
+        .habit-calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .habit-calendar-body {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px; /* 縮小日期格子間距 */
+            text-align: center;
+        }
+        .habit-calendar-body > div {
+            font-size: 0.8em; /* 縮小文字 */
+        }
+        .habit-calendar-day {
+            padding: 6px; /* 縮小日期格子內距 */
+            border-radius: 6px; /* 縮小圓角 */
+            background-color: #E6EAF0;
+            cursor: pointer;
+            position: relative;
+            font-size: 0.8em;
+            transition: background-color 0.2s;
+        }
+        .habit-calendar-day:hover {
+            background-color: #D3D8E0;
+        }
+        .habit-calendar-day.today {
+            border: 2px solid var(--accent-color);
+            background-color: #FEE7ED;
+        }
+        .habit-calendar-day.achieved {
+            background-color: #D6F5E3; /* 淺綠 */
+        }
+        .habit-calendar-day.missed {
+            background-color: #FEE7ED; /* 淺粉 */
+        }
+        .habit-calendar-day.achieved::after {
+            content: '✓';
+            color: green;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .habit-calendar-day.missed::after {
+            content: '✗';
+            color: red;
+            font-weight: bold;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #target-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        /* 針對habit-end-date輸入框套用薄荷綠樣式 */
+        #habit-end-date {
+            background-color: #E8F4F2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="navigation">
+            <button class="nav-button" onclick="showPage('todo')">待辦清單</button>
+            <button class="nav-button" onclick="showPage('pomodoro')">番茄鐘</button>
+            <button class="nav-button" onclick="showPage('timeline')">時間線</button>
+            <button class="nav-button" onclick="showPage('habit')">習慣追蹤</button>
+        </div>
+
+        <div id="todo" class="page active">
+            <div class="card todo-card">
+                <h2>待辦事項清單</h2>
+                <div class="list-create-group">
+                    <input type="text" id="new-list-name" placeholder="新增清單名稱...">
+                    <button class="add-button" onclick="addList()">建立清單</button>
+                </div>
+
+                <div class="todo-lists-container" id="todo-lists-container"></div>
+                
+                <div id="todo-input-section" style="display: none;">
+                    <h3 id="current-list-title"></h3>
+                    <div class="todo-input-group">
+                        <input type="text" id="new-todo-input" placeholder="新增待辦事項...">
+                        <select id="quadrant-select">
+                            <option value="1">重要且緊急</option>
+                            <option value="2">重要但不緊急</option>
+                            <option value="3">不重要但緊急</option>
+                            <option value="4">不重要也不緊急</option>
+                        </select>
+                        <div class="input-group">
+                            <label>日期:</label>
+                            <input type="date" id="new-todo-date">
+                        </div>
+                        <div class="input-group">
+                            <label>時間:</label>
+                            <input type="time" id="new-todo-time">
+                        </div>
+                        <button class="add-button" onclick="addTodo()">添加</button>
+                    </div>
+                </div>
+
+                <ul class="todo-list" id="todo-list"></ul>
+            </div>
+        </div>
+
+        <div id="pomodoro" class="page">
+            <div class="card pomodoro-timer">
+                <h2>番茄鐘</h2>
+                <div class="pomodoro-settings">
+                    <label for="work-time">工作時間 (分):</label>
+                    <input type="number" id="work-time" value="25" min="1">
+                    <label for="break-time">休息時間 (分):</label>
+                    <input type="number" id="break-time" value="5" min="1">
+                </div>
+                <div id="timer-display">25:00</div>
+                <div class="timer-buttons">
+                    <button onclick="startTimer()">開始</button>
+                    <button onclick="pauseTimer()">暫停</button>
+                    <button onclick="resetTimer()">重設</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="timeline" class="page">
+            <div class="card timeline-card">
+                <h2>時間線計畫</h2>
+                <div class="timeline-input-group">
+                    <input type="text" id="new-timeline-input" placeholder="新增時間線名稱...">
+                    <button class="add-button" onclick="addTimeline()">新增時間線</button>
+                </div>
+                <ul class="timeline-list" id="timeline-list"></ul>
+            </div>
+        </div>
+
+        <div id="habit" class="page">
+            <div class="card habit-card">
+                <h2>習慣追蹤</h2>
+                <div class="habit-input-group">
+                    <input type="text" id="new-habit-name" placeholder="新增習慣名稱 (例如：每天閱讀)">
+                    <select id="habit-goal-type" onchange="toggleHabitGoalOptions()">
+                        <option value="by-date">指定日期</option>
+                        <option value="by-count">持續次數</option>
+                    </select>
+                    <div id="target-options">
+                        <div id="by-date-options">
+                            <div class="input-row">
+                                <label for="habit-target-count-date">目標次數:</label>
+                                <input type="number" id="habit-target-count-date" value="7" min="1" style="width: 80px;">
+                            </div>
+                            <div class="input-row">
+                                <label for="habit-end-date">結束日期:</label>
+                                <input type="date" id="habit-end-date">
+                            </div>
+                        </div>
+                        <div id="by-count-options" style="display: none;">
+                            <div class="input-row">
+                                <label for="habit-target-count-total">總目標次數:</label>
+                                <input type="number" id="habit-target-count-total" value="100" min="1" style="width: 80px;">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="add-button" onclick="addHabit()">新增習慣</button>
+                </div>
+
+                <div class="habit-list" id="habit-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === 頁面切換功能 ===
+        const pages = document.querySelectorAll('.page');
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // === 待辦事項功能 ===
+        const todoInput = document.getElementById('new-todo-input');
+        const todoDateInput = document.getElementById('new-todo-date');
+        const todoTimeInput = document.getElementById('new-todo-time');
+        const quadrantSelect = document.getElementById('quadrant-select');
+        const todoList = document.getElementById('todo-list');
+        const listCreateInput = document.getElementById('new-list-name');
+        const listsContainer = document.getElementById('todo-lists-container');
+        const todoInputSection = document.getElementById('todo-input-section');
+        const currentListTitle = document.getElementById('current-list-title');
+        
+        let todoLists = [];
+        let activeListIndex = -1;
+
+        function addList() {
+            const listName = listCreateInput.value.trim();
+            if (listName) {
+                todoLists.push({
+                    name: listName,
+                    items: []
+                });
+                listCreateInput.value = '';
+                renderLists();
+                selectList(todoLists.length - 1);
+            }
+        }
+        
+        function renameList(index) {
+            const newName = prompt('請輸入新的清單名稱：', todoLists[index].name);
+            if (newName && newName.trim() !== '') {
+                todoLists[index].name = newName.trim();
+                renderLists();
+                currentListTitle.textContent = todoLists[index].name;
+            }
+        }
+
+        function renderLists() {
+            listsContainer.innerHTML = '';
+            todoLists.forEach((list, index) => {
+                const tab = document.createElement('div');
+                tab.className = 'todo-list-tab';
+                if (index === activeListIndex) {
+                    tab.classList.add('active');
+                }
+                tab.textContent = list.name;
+                tab.onclick = () => selectList(index);
+                tab.ondblclick = () => renameList(index);
+                listsContainer.appendChild(tab);
+            });
+        }
+        
+        function selectList(index) {
+            activeListIndex = index;
+            todoInputSection.style.display = 'block';
+            currentListTitle.textContent = todoLists[index].name;
+            renderTodoItems();
+            renderLists();
+        }
+
+        function renderTodoItems() {
+            todoList.innerHTML = '';
+            if (activeListIndex !== -1) {
+                todoLists[activeListIndex].items.forEach(item => {
+                    createTodoItem(item.text, item.quadrant, item.completed, item.date, item.time);
+                });
+            }
+        }
+
+        function createTodoItem(text, quadrant, isCompleted = false, date = '', time = '') {
+            const li = document.createElement('li');
+            li.className = `todo-item quadrant-${quadrant}`;
+            if (isCompleted) li.classList.add('completed');
+            
+            let dateTimeDisplay = '';
+            if (date || time) {
+                const datePart = date ? date.replace(/-/g, '/') : '';
+                const timePart = time ? time : '';
+                dateTimeDisplay = `<div class="todo-datetime">${datePart} ${timePart}</div>`;
+            }
+
+            li.innerHTML = `
+                <div class="todo-item-info">
+                    <span class="todo-text">${text}</span>
+                    ${dateTimeDisplay}
+                </div>
+                <div class="todo-actions">
+                    <button onclick="toggleCompleted(this)">✓</button>
+                    <button onclick="deleteTodo(this)">✗</button>
+                </div>
+            `;
+            todoList.appendChild(li);
+        }
+
+        function addTodo() {
+            const text = todoInput.value.trim();
+            const quadrant = quadrantSelect.value;
+            const date = todoDateInput.value;
+            const time = todoTimeInput.value;
+
+            if (text && activeListIndex !== -1) {
+                todoLists[activeListIndex].items.push({
+                    text: text,
+                    quadrant: quadrant,
+                    date: date,
+                    time: time,
+                    completed: false
+                });
+                todoInput.value = '';
+                todoDateInput.value = '';
+                todoTimeInput.value = '';
+                renderTodoItems();
+            }
+        }
+
+        function toggleCompleted(button) {
+            const li = button.closest('.todo-item');
+            const itemText = li.querySelector('.todo-item-info .todo-text').textContent;
+            
+            li.classList.toggle('completed');
+
+            const itemIndex = todoLists[activeListIndex].items.findIndex(item => item.text === itemText);
+            if (itemIndex !== -1) {
+                todoLists[activeListIndex].items[itemIndex].completed = li.classList.contains('completed');
+            }
+        }
+
+        function deleteTodo(button) {
+            const li = button.closest('.todo-item');
+            const itemText = li.querySelector('.todo-item-info .todo-text').textContent;
+
+            const itemIndex = todoLists[activeListIndex].items.findIndex(item => item.text === itemText);
+            if (itemIndex !== -1) {
+                todoLists[activeListIndex].items.splice(itemIndex, 1);
+            }
+            li.remove();
+        }
+
+        // === 番茄鐘功能 ===
+        const timerDisplay = document.getElementById('timer-display');
+        const workTimeInput = document.getElementById('work-time');
+        const breakTimeInput = document.getElementById('break-time');
+        let timerInterval;
+        let timeLeft;
+        let isRunning = false;
+        let isWorkTime = true;
+
+        function setTimer() {
+            const minutes = isWorkTime ? workTimeInput.value : breakTimeInput.value;
+            timeLeft = minutes * 60;
+            updateTimerDisplay();
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            isRunning = true;
+            if (timeLeft === 0) setTimer();
+
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    clearInterval(timerInterval);
+                    isRunning = false;
+                    alert(isWorkTime ? '工作時間結束！開始休息吧！' : '休息時間結束！繼續工作吧！');
+                    isWorkTime = !isWorkTime;
+                    setTimer();
+                    startTimer();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isRunning = false;
+            isWorkTime = true;
+            setTimer();
+        }
+        
+        if (workTimeInput) {
+            workTimeInput.addEventListener('change', resetTimer);
+        }
+        if (breakTimeInput) {
+            breakTimeInput.addEventListener('change', resetTimer);
+        }
+        
+
+        // === 時間線功能 ===
+        const newTimelineInput = document.getElementById('new-timeline-input');
+        const timelineList = document.getElementById('timeline-list');
+
+        function addTimeline() {
+            const timelineName = newTimelineInput.value.trim();
+            if (timelineName) {
+                const li = document.createElement('li');
+                li.className = 'timeline-item';
+                li.innerHTML = `
+                    <h3>${timelineName}</h3>
+                    <div class="timeline-nodes-container"></div>
+                    <div class="timeline-node-input">
+                        <input type="text" placeholder="新增節點工作..." class="node-text-input">
+                        <div class="input-group">
+                            <label>日期:</label>
+                            <input type="date" class="node-date-input">
+                        </div>
+                        <div class="input-group">
+                            <label>時間:</label>
+                            <input type="time" class="node-time-input">
+                        </div>
+                        <button class="add-button" onclick="addTimelineNode(this)">+</button>
+                    </div>
+                `;
+                timelineList.appendChild(li);
+                newTimelineInput.value = '';
+            }
+        }
+
+        function addTimelineNode(button) {
+            const container = button.closest('.timeline-item').querySelector('.timeline-nodes-container');
+            const inputGroup = button.closest('.timeline-node-input');
+            const nodeText = inputGroup.querySelector('.node-text-input').value.trim();
+            const nodeDate = inputGroup.querySelector('.node-date-input').value;
+            const nodeTime = inputGroup.querySelector('.node-time-input').value;
+
+            if (nodeText) {
+                const nodeDiv = document.createElement('div');
+                nodeDiv.className = 'timeline-node';
+                let dateDisplay = '';
+                if (nodeDate) {
+                    dateDisplay += nodeDate.replace(/-/g, '/');
+                }
+                if (nodeTime) {
+                    dateDisplay += (dateDisplay ? ' ' : '') + nodeTime;
+                }
+                nodeDiv.innerHTML = `
+                    <span>${nodeText}</span>
+                    ${dateDisplay ? `<div class="timeline-node-date">${dateDisplay}</div>` : ''}
+                    <div class="timeline-node-actions">
+                        <button onclick="deleteTimelineNode(this)">✗</button>
+                    </div>
+                `;
+                container.appendChild(nodeDiv);
+                inputGroup.querySelector('.node-text-input').value = '';
+                inputGroup.querySelector('.node-date-input').value = '';
+                inputGroup.querySelector('.node-time-input').value = '';
+            }
+        }
+        
+        function deleteTimelineNode(button) {
+            const node = button.closest('.timeline-node');
+            node.remove();
+        }
+
+
+        // === 習慣追蹤功能 ===
+        const newHabitNameInput = document.getElementById('new-habit-name');
+        const habitGoalTypeSelect = document.getElementById('habit-goal-type');
+        const byDateOptions = document.getElementById('by-date-options');
+        const byCountOptions = document.getElementById('by-count-options');
+        const habitTargetCountDateInput = document.getElementById('habit-target-count-date');
+        const habitEndDateInput = document.getElementById('habit-end-date');
+        const habitTargetCountTotalInput = document.getElementById('habit-target-count-total');
+        const habitList = document.getElementById('habit-list');
+
+        let habits = [];
+
+        function toggleHabitGoalOptions() {
+            if (habitGoalTypeSelect.value === 'by-date') {
+                byDateOptions.style.display = 'flex';
+                byCountOptions.style.display = 'none';
+            } else {
+                byDateOptions.style.display = 'none';
+                byCountOptions.style.display = 'flex';
+            }
+        }
+
+        function addHabit() {
+            const name = newHabitNameInput.value.trim();
+            const goalType = habitGoalTypeSelect.value;
+            let target;
+            let endDate = null;
+
+            if (!name) {
+                alert('請輸入習慣名稱！');
+                return;
+            }
+
+            if (goalType === 'by-date') {
+                target = parseInt(habitTargetCountDateInput.value, 10);
+                endDate = habitEndDateInput.value;
+                if (!target || target < 1) {
+                    alert('目標次數必須大於0！');
+                    return;
+                }
+                if (!endDate) {
+                    alert('請選擇結束日期！');
+                    return;
+                }
+            } else {
+                target = parseInt(habitTargetCountTotalInput.value, 10);
+                if (!target || target < 1) {
+                    alert('總目標次數必須大於0！');
+                    return;
+                }
+            }
+
+            habits.push({
+                name,
+                goalType,
+                target,
+                endDate,
+                completedDays: {} 
+            });
+            
+            newHabitNameInput.value = '';
+            habitTargetCountDateInput.value = 7;
+            habitEndDateInput.value = '';
+            habitTargetCountTotalInput.value = 100;
+
+            renderHabits();
+        }
+        
+        function renderHabits(expandedIndex = -1) {
+            habitList.innerHTML = '';
+            habits.forEach((habit, index) => {
+                const currentCount = getCurrentHabitCount(habit);
+                const progressPercentage = (currentCount / habit.target) * 100;
+                
+                let goalText = '';
+                if (habit.goalType === 'by-date') {
+                    const timeLeft = Math.ceil((new Date(habit.endDate) - new Date()) / (1000 * 60 * 60 * 24));
+                    goalText = `在 ${habit.endDate} 前完成`;
+                    if (timeLeft > 0) {
+                        goalText += ` (剩餘 ${timeLeft} 天)`;
+                    } else if (timeLeft <= 0 && currentCount < habit.target) {
+                        goalText += ` (已逾期)`;
+                    } else if (currentCount >= habit.target) {
+                        goalText += ` (已達成)`;
+                    }
+                } else {
+                    goalText = `總目標次數`;
+                    if (currentCount >= habit.target) {
+                        goalText += ` (已達成)`;
+                    }
+                }
+
+                const habitItem = document.createElement('div');
+                habitItem.className = 'habit-item';
+                habitItem.innerHTML = `
+                    <div class="habit-item-header" onclick="toggleHabitDrawer(this, ${index})" ondblclick="renameHabit(${index})">
+                        <div class="habit-title-container">
+                            <h3>${habit.name}</h3>
+                        </div>
+                        <div class="habit-actions">
+                            <button onclick="event.stopPropagation(); deleteHabit(${index});">✗</button>
+                        </div>
+                    </div>
+                    <div class="habit-item-content">
+                        <span>進度: ${currentCount} / ${habit.target} ${goalText}</span>
+                        <div class="habit-progress-container">
+                            <div class="habit-progress-bar" style="width: ${progressPercentage > 100 ? 100 : progressPercentage}%;"></div>
+                        </div>
+                        ${renderCalendar(index)}
+                    </div>
+                `;
+                habitList.appendChild(habitItem);
+
+                // 如果是需要展開的項目，則展開它
+                if (index === expandedIndex) {
+                    habitItem.querySelector('.habit-item-header').classList.add('expanded');
+                    habitItem.querySelector('.habit-item-content').classList.add('expanded');
+                }
+            });
+        }
+        
+        function toggleHabitDrawer(header, index) {
+            const content = header.nextElementSibling;
+            const allContent = document.querySelectorAll('.habit-item-content');
+            const allHeaders = document.querySelectorAll('.habit-item-header');
+
+            // 收合所有其他抽屜
+            allContent.forEach(item => {
+                if (item !== content) {
+                    item.classList.remove('expanded');
+                }
+            });
+            allHeaders.forEach(item => {
+                if (item !== header) {
+                    item.classList.remove('expanded');
+                }
+            });
+
+            // 展開或收合當前抽屜
+            content.classList.toggle('expanded');
+            header.classList.toggle('expanded');
+        }
+
+        function renameHabit(index) {
+            const newName = prompt('請輸入新的習慣名稱：', habits[index].name);
+            if (newName && newName.trim() !== '') {
+                habits[index].name = newName.trim();
+                renderHabits();
+            }
+        }
+        
+        function deleteHabit(index) {
+            habits.splice(index, 1);
+            renderHabits();
+        }
+
+        function getCurrentHabitCount(habit) {
+            let count = 0;
+            const today = new Date();
+            
+            if (habit.goalType === 'by-date') {
+                const endDate = new Date(habit.endDate);
+                for (const date in habit.completedDays) {
+                    const checkDate = new Date(date);
+                    if (habit.completedDays[date] && checkDate <= endDate && checkDate <= today) {
+                        count++;
+                    }
+                }
+            } else { // 'by-count'
+                for (const date in habit.completedDays) {
+                    if (habit.completedDays[date]) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        function renderCalendar(habitIndex) {
+            const habit = habits[habitIndex];
+            const today = new Date();
+            const currentMonth = today.getMonth();
+            const currentYear = today.getFullYear();
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+
+            let calendarHTML = `
+                <div class="habit-calendar-wrapper">
+                    <div class="habit-calendar-header">
+                        <span>${currentYear}年 ${currentMonth + 1}月</span>
+                    </div>
+                    <div class="habit-calendar-body">
+                        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+            `;
+
+            let dayOfWeek = firstDayOfMonth.getDay();
+            for (let i = 0; i < dayOfWeek; i++) {
+                calendarHTML += '<div></div>';
+            }
+
+            for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
+                const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = today.getDate() === day && today.getMonth() === currentMonth;
+                const achieved = habit.completedDays[date] === true;
+                const missed = habit.completedDays[date] === false;
+                const className = `habit-calendar-day ${isToday ? 'today' : ''} ${achieved ? 'achieved' : ''} ${missed ? 'missed' : ''}`;
+                
+                calendarHTML += `<div class="${className}" onclick="event.stopPropagation(); toggleHabitCompletion(${habitIndex}, '${date}')">${day}</div>`;
+            }
+
+            calendarHTML += '</div></div>';
+            return calendarHTML;
+        }
+
+        function toggleHabitCompletion(habitIndex, date) {
+            const habit = habits[habitIndex];
+            
+            if (habit.completedDays[date] === true) {
+                delete habit.completedDays[date]; 
+            } else {
+                habit.completedDays[date] = true;
+            }
+            
+            renderHabits(habitIndex); // 重新渲染並保持當前項目展開
+        }
+
+        // 頁面載入時初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            if(timerDisplay) {
+                setTimer();
+            }
+            renderLists();
+            toggleHabitGoalOptions();
+        });
+
+    </script>
+</body>
+</html>
