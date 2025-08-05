@@ -3,23 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>todo app</title>
+    <title>馬卡龍工作小幫手</title>
     <style>
         /* 馬卡龍色系變數 */
         :root {
-            --primary-color: #A9D6E5; /* 淡藍 */
-            --secondary-color: #92E6C2; /* 薄荷綠 */
-            --accent-color: #F7C6D9; /* 櫻花粉 */
+            --primary-color: #A9D6E5;
+            --secondary-color: #92E6C2;
+            --accent-color: #F7C6D9;
             --text-color: #333;
             --background-color: #F4F8FA;
             --card-bg-color: #FFFFFF;
             --shadow-color: rgba(0, 0, 0, 0.1);
             --list-item-hover: #F0F4F7;
+            --body-bg-image: none;
+            --border-radius-main: 20px;
+            --border-radius-button: 10px;
+            --font-family-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: var(--font-family-main);
             background-color: var(--background-color);
+            background-image: var(--body-bg-image);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: var(--text-color);
             margin: 0;
             padding: 30px;
@@ -27,8 +35,67 @@
             justify-content: center;
             align-items: flex-start;
             min-height: 100vh;
-            position: relative; /* 為了菜單按鈕定位 */
+            position: relative;
         }
+        
+        /* === 主題 CSS 變數 === */
+        /* 預設馬卡龍風 */
+        .theme-macaron {
+            --primary-color: #A9D6E5;
+            --secondary-color: #92E6C2;
+            --accent-color: #F7C6D9;
+            --text-color: #333;
+            --background-color: #F4F8FA;
+            --card-bg-color: #FFFFFF;
+            --border-radius-main: 20px;
+            --border-radius-button: 10px;
+            --font-family-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+        /* 像素風 */
+        @font-face {
+            font-family: 'Pixelify Sans';
+            src: url('https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap') format('truetype');
+        }
+        .theme-pixel {
+            --primary-color: #2E58A4;
+            --secondary-color: #4CAF50;
+            --accent-color: #FF5722;
+            --text-color: #262626;
+            --background-color: #A0D2EB;
+            --card-bg-color: #E2E2E2;
+            --border-radius-main: 0;
+            --border-radius-button: 0;
+            --font-family-main: 'Pixelify Sans', cursive;
+            --shadow-color: rgba(0, 0, 0, 0.5);
+        }
+        /* 森林風 */
+        .theme-forest {
+            --primary-color: #6C8E77;
+            --secondary-color: #B5C99A;
+            --accent-color: #D4A373;
+            --text-color: #3C3C3C;
+            --background-color: #F8F4E3;
+            --card-bg-color: #E0E9D4;
+            --border-radius-main: 20px;
+            --border-radius-button: 10px;
+            --font-family-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+        /* 沙漠風 */
+        .theme-desert {
+            --primary-color: #C07F00;
+            --secondary-color: #FFD495;
+            --accent-color: #C14D3C;
+            --text-color: #5C4F3C;
+            --background-color: #FFFBEB;
+            --card-bg-color: #F7E4C4;
+            --border-radius-main: 20px;
+            --border-radius-button: 10px;
+            --font-family-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
 
         /* 側邊菜單按鈕 */
         #menu-button {
@@ -51,12 +118,21 @@
             transform: scale(1.1);
             background-color: #93B8C7;
         }
+        .theme-pixel #menu-button {
+            border-radius: 0;
+            box-shadow: 4px 4px 0 #183C7E;
+            transition: box-shadow 0.1s, transform 0.1s;
+        }
+        .theme-pixel #menu-button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 #183C7E;
+        }
 
         /* 側邊菜單 */
         #main-menu {
             position: fixed;
             top: 0;
-            left: -300px; /* 初始隱藏 */
+            left: -300px;
             width: 250px;
             height: 100%;
             background-color: var(--card-bg-color);
@@ -72,10 +148,13 @@
         #main-menu.open {
             left: 0;
         }
+        .theme-pixel #main-menu {
+            border-right: 4px solid var(--text-color);
+        }
         .menu-item {
             padding: 15px;
             background-color: var(--background-color);
-            border-radius: 10px;
+            border-radius: var(--border-radius-button);
             font-size: 1.1em;
             cursor: pointer;
             transition: background-color 0.2s;
@@ -83,18 +162,31 @@
         .menu-item:hover {
             background-color: var(--list-item-hover);
         }
+        .theme-pixel .menu-item {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            box-shadow: 2px 2px 0 var(--text-color);
+            transition: all 0.1s;
+        }
+        .theme-pixel .menu-item:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 var(--text-color);
+            background-color: var(--background-color);
+        }
         #menu-close {
             text-align: right;
             font-size: 1.5em;
             cursor: pointer;
             color: #888;
         }
-        /* 新增的樣式，調整菜單項目間距 */
+        .theme-pixel #menu-close {
+            color: var(--text-color);
+        }
         .menu-items-container {
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: 20px; /* 新增的間距 */
+            margin-top: 20px;
         }
 
         .container {
@@ -103,7 +195,7 @@
             gap: 30px;
             width: 100%;
             max-width: 1000px;
-            margin-top: 50px; /* 避免內容被菜單按鈕遮擋 */
+            margin-top: 50px;
         }
 
         .page {
@@ -118,20 +210,28 @@
 
         .card {
             background-color: var(--card-bg-color);
-            border-radius: 20px;
+            border-radius: var(--border-radius-main);
             box-shadow: 0 6px 12px var(--shadow-color);
             padding: 30px;
             transition: transform 0.2s, box-shadow 0.2s;
             width: 100%;
             box-sizing: border-box;
         }
+        .theme-pixel .card {
+            border-radius: 0;
+            border: 4px solid var(--text-color);
+            box-shadow: 6px 6px 0 var(--text-color);
+        }
 
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 16px var(--shadow-color);
         }
+        .theme-pixel .card:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 4px 4px 0 var(--text-color);
+        }
         
-        /* 針對過往待辦頁面的白色背景框新增間距 */
         #past-todo-page .card {
             margin-top: 50px; 
         }
@@ -156,7 +256,7 @@
 
         .nav-button {
             padding: 15px 25px;
-            border-radius: 10px;
+            border-radius: var(--border-radius-button);
             background-color: var(--primary-color);
             color: white;
             text-decoration: none;
@@ -168,6 +268,17 @@
         }
         .nav-button:hover {
             background-color: #93B8C7;
+        }
+        .theme-pixel .nav-button {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            box-shadow: 2px 2px 0 var(--text-color);
+            transition: all 0.1s;
+        }
+        .theme-pixel .nav-button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 var(--text-color);
+            background-color: var(--primary-color);
         }
 
         /* 待辦事項樣式 */
@@ -187,11 +298,26 @@
         }
 
         .todo-input-group input, .todo-input-group select, .add-button,
-        .timeline-input-group input, .timeline-input-group button, .list-create-group input {
+        .timeline-input-group input, .timeline-input-group button, .list-create-group input,
+        .habit-input-group input, .habit-input-group select, .habit-input-group button {
             padding: 15px;
             border: 1px solid #ccc;
-            border-radius: 10px;
+            border-radius: var(--border-radius-button);
             font-size: 1em;
+            font-family: var(--font-family-main);
+        }
+        .theme-pixel .todo-input-group input, .theme-pixel .todo-input-group select, .theme-pixel .add-button,
+        .theme-pixel .timeline-input-group input, .theme-pixel .timeline-input-group button, .theme-pixel .list-create-group input,
+        .theme-pixel .habit-input-group input, .theme-pixel .habit-input-group select, .theme-pixel .habit-input-group button {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            box-shadow: 2px 2px 0 var(--text-color);
+            transition: all 0.1s;
+        }
+        .theme-pixel .todo-input-group input:focus, .theme-pixel .add-button:hover,
+        .theme-pixel .list-create-group input:focus, .theme-pixel .list-create-group button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 var(--text-color);
         }
         
         .add-button {
@@ -206,7 +332,11 @@
         .add-button:hover {
             background-color: #7AD9A5;
         }
-        
+        .theme-pixel .add-button {
+            color: var(--text-color);
+            background-color: var(--secondary-color);
+        }
+
         .todo-lists-container {
             display: flex;
             flex-wrap: wrap;
@@ -225,6 +355,16 @@
             background-color: var(--secondary-color);
             color: white;
         }
+        .theme-pixel .todo-list-tab {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            background-color: var(--card-bg-color);
+        }
+        .theme-pixel .todo-list-tab.active {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
 
         .todo-list, .timeline-list, .habit-list, .past-todo-list {
             list-style: none;
@@ -248,6 +388,12 @@
         .todo-item:hover {
             background-color: var(--list-item-hover);
         }
+        .theme-pixel .todo-item {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            box-shadow: 2px 2px 0 var(--text-color);
+            background-color: var(--card-bg-color);
+        }
 
         .todo-item.completed {
             background-color: #E8F4F2;
@@ -262,6 +408,12 @@
              border-radius: 12px;
              text-decoration: line-through;
              color: #999;
+        }
+        .theme-pixel .past-todo-item {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            box-shadow: 2px 2px 0 var(--text-color);
+            background-color: var(--card-bg-color);
         }
 
         .todo-text {
@@ -287,6 +439,9 @@
             color: #777;
             transition: color 0.2s;
         }
+        .theme-pixel .todo-actions button {
+            color: var(--text-color);
+        }
 
         .todo-actions button:hover {
             color: var(--primary-color);
@@ -296,7 +451,11 @@
         .todo-item.quadrant-2 { border-left: 6px solid #6BE879; }
         .todo-item.quadrant-3 { border-left: 6px solid #F0B429; }
         .todo-item.quadrant-4 { border-left: 6px solid #6A86FF; }
-
+        .theme-pixel .todo-item.quadrant-1 { border-left: 4px solid var(--accent-color); }
+        .theme-pixel .todo-item.quadrant-2 { border-left: 4px solid var(--secondary-color); }
+        .theme-pixel .todo-item.quadrant-3 { border-left: 4px solid #FFD300; }
+        .theme-pixel .todo-item.quadrant-4 { border-left: 4px solid var(--primary-color); }
+        
         .todo-input-group .input-group {
             display: flex;
             gap: 10px;
@@ -309,7 +468,11 @@
         }
         .todo-input-group input[type="date"],
         .todo-input-group input[type="time"] {
-            background-color: #E8F4F2; /* 薄荷綠 */
+            background-color: #E8F4F2;
+        }
+        .theme-pixel .todo-input-group input[type="date"],
+        .theme-pixel .todo-input-group input[type="time"] {
+            background-color: var(--background-color);
         }
 
 
@@ -350,17 +513,30 @@
             background-color: var(--accent-color);
             border: none;
             padding: 15px 30px;
-            border-radius: 10px;
+            border-radius: var(--border-radius-button);
             cursor: pointer;
             color: white;
             font-weight: bold;
             transition: background-color 0.2s;
             font-size: 1.1em;
+            font-family: var(--font-family-main);
         }
 
         .timer-buttons button:hover {
             background-color: #E0A6C7;
         }
+        .theme-pixel .timer-buttons button {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            box-shadow: 2px 2px 0 var(--text-color);
+            color: var(--text-color);
+        }
+        .theme-pixel .timer-buttons button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 0 0 0 var(--text-color);
+            background-color: var(--accent-color);
+        }
+
 
         /* 時間線樣式 */
         .timeline-item {
@@ -368,6 +544,9 @@
             padding-left: 40px;
             border-left: 3px solid var(--primary-color);
             margin-left: 15px;
+        }
+        .theme-pixel .timeline-item {
+            border-left: 4px solid var(--primary-color);
         }
 
         .timeline-item::before {
@@ -381,6 +560,13 @@
             border: 3px solid var(--background-color);
             border-radius: 50%;
         }
+        .theme-pixel .timeline-item::before {
+            border-radius: 0;
+            width: 16px;
+            height: 16px;
+            left: -12px;
+            border: 4px solid var(--card-bg-color);
+        }
 
         .timeline-node {
             background-color: #F8F9FA;
@@ -389,10 +575,20 @@
             margin-bottom: 15px;
             border-left: 4px solid var(--secondary-color);
         }
+        .theme-pixel .timeline-node {
+            border-radius: 0;
+            border-left: 4px solid var(--secondary-color);
+            background-color: var(--card-bg-color);
+            border: 2px solid var(--text-color);
+            box-shadow: 2px 2px 0 var(--text-color);
+        }
         .timeline-node-date {
             font-size: 0.9em;
             color: #888;
             margin-top: 5px;
+        }
+        .theme-pixel .timeline-node-date {
+            color: var(--text-color);
         }
 
         .timeline-node-input {
@@ -420,7 +616,11 @@
         .timeline-node-input input[type="date"],
         .timeline-node-input input[type="time"] {
             padding: 12px;
-            background-color: #E8F4F2; /* 薄荷綠 */
+            background-color: #E8F4F2;
+        }
+        .theme-pixel .timeline-node-input input[type="date"],
+        .theme-pixel .timeline-node-input input[type="time"] {
+            background-color: var(--background-color);
         }
         .timeline-node-input .add-button {
             flex-grow: 1;
@@ -433,37 +633,23 @@
             gap: 15px;
             margin-bottom: 25px;
         }
-        .habit-input-group input, .habit-input-group select, .habit-input-group button {
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 1em;
-        }
-        .habit-input-group .input-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .habit-input-group .input-row input,
-        .habit-input-group .input-row select {
-            flex-grow: 1;
-        }
-
-        /* 指定日期選項的間距和高度調整 */
         #by-date-options {
             display: flex;
             flex-direction: column;
-            gap: 4px; /* 目標次數與結束日期間隔 */
+            gap: 4px;
         }
         #by-date-options .input-row {
             align-items: center;
             gap: 10px;
         }
         #habit-target-count-date {
-            padding: 10px; /* 縮小目標次數輸入框高度 */
+            padding: 10px;
         }
         #habit-end-date {
-            padding: 12px; /* 保持結束日期輸入框高度 */
+            padding: 12px;
+        }
+        .theme-pixel #habit-end-date {
+            background-color: var(--background-color);
         }
 
 
@@ -494,9 +680,14 @@
             border-bottom: none;
             min-height: auto;
         }
-        .habit-item-header h3 {
-            margin: 0;
-            padding: 0;
+        .theme-pixel .habit-item-header {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            box-shadow: 2px 2px 0 var(--text-color);
+        }
+        .theme-pixel .habit-item-header.expanded {
+            border-bottom: 0;
+            box-shadow: 2px 0px 0 var(--text-color), -2px 0px 0 var(--text-color);
         }
 
         .habit-title-container {
@@ -519,6 +710,12 @@
             transition: max-height 0.4s ease-out, padding 0.4s ease-out;
             box-sizing: border-box; 
         }
+        .theme-pixel .habit-item-content {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            border-top: none;
+            box-shadow: 2px 2px 0 var(--text-color);
+        }
 
         .habit-item-content.expanded {
             padding: 20px;
@@ -533,6 +730,12 @@
             margin-top: 10px;
             margin-bottom: 20px;
         }
+        .theme-pixel .habit-progress-container {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            background-color: var(--card-bg-color);
+        }
+
         .habit-progress-bar {
             height: 20px;
             background-color: var(--primary-color);
@@ -542,10 +745,13 @@
             font-size: 0.8em;
             transition: width 0.4s ease;
         }
+        .theme-pixel .habit-progress-bar {
+            background-color: var(--secondary-color);
+        }
 
         /* 日曆整體樣式調整 */
         .habit-calendar-wrapper {
-            max-width: 300px; /* 限制日曆最大寬度 */
+            max-width: 300px;
             margin: 0 auto;
         }
 
@@ -560,33 +766,52 @@
         .habit-calendar-body {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 3px; /* 縮小日期格子間距 */
+            gap: 3px;
             text-align: center;
         }
         .habit-calendar-body > div {
-            font-size: 0.8em; /* 縮小文字 */
+            font-size: 0.8em;
         }
         .habit-calendar-day {
-            padding: 6px; /* 縮小日期格子內距 */
-            border-radius: 6px; /* 縮小圓角 */
+            padding: 6px;
+            border-radius: 6px;
             background-color: #E6EAF0;
             cursor: pointer;
             position: relative;
             font-size: 0.8em;
             transition: background-color 0.2s;
         }
+        .theme-pixel .habit-calendar-day {
+            background-color: var(--background-color);
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+        }
+
         .habit-calendar-day:hover {
             background-color: #D3D8E0;
+        }
+        .theme-pixel .habit-calendar-day:hover {
+            background-color: var(--primary-color);
         }
         .habit-calendar-day.today {
             border: 2px solid var(--accent-color);
             background-color: #FEE7ED;
         }
+        .theme-pixel .habit-calendar-day.today {
+            border: 2px solid var(--accent-color);
+            background-color: var(--background-color);
+        }
         .habit-calendar-day.achieved {
-            background-color: #D6F5E3; /* 淺綠 */
+            background-color: #D6F5E3;
+        }
+        .theme-pixel .habit-calendar-day.achieved {
+            background-color: var(--secondary-color);
         }
         .habit-calendar-day.missed {
-            background-color: #FEE7ED; /* 淺粉 */
+            background-color: #FEE7ED;
+        }
+        .theme-pixel .habit-calendar-day.missed {
+            background-color: var(--accent-color);
         }
         .habit-calendar-day.achieved::after {
             content: '✓';
@@ -597,6 +822,10 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        .theme-pixel .habit-calendar-day.achieved::after {
+            color: white;
+            text-shadow: 1px 1px 0 var(--text-color);
+        }
         .habit-calendar-day.missed::after {
             content: '✗';
             color: red;
@@ -606,18 +835,100 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        .theme-pixel .habit-calendar-day.missed::after {
+            color: white;
+            text-shadow: 1px 1px 0 var(--text-color);
+        }
         #target-options {
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
-        /* 針對habit-end-date輸入框套用薄荷綠樣式 */
-        #habit-end-date {
-            background-color: #E8F4F2;
+
+
+        /* === 主題設定頁面樣式 === */
+        .theme-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .theme-option {
+            height: 80px;
+            border-radius: var(--border-radius-main);
+            cursor: pointer;
+            border: 3px solid transparent;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 10px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .theme-option:hover {
+            transform: translateY(-3px);
+        }
+        .theme-option.active {
+            border-color: var(--primary-color);
+        }
+        .theme-pixel .theme-option {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            box-shadow: 4px 4px 0 var(--text-color);
+            color: var(--text-color);
+            text-shadow: none;
+            transition: all 0.1s;
+        }
+        .theme-pixel .theme-option:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0 var(--text-color);
+        }
+        .theme-pixel .theme-option.active {
+            border-color: var(--primary-color);
+        }
+        
+        .theme-macaron-option { background-color: #A9D6E5; }
+        .theme-pixel-option { background-color: #98C4E3; }
+        .theme-forest-option { background-color: #B5C99A; }
+        .theme-desert-option { background-color: #FFD495; }
+        
+        .custom-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .custom-image-option input[type="file"] {
+            display: block;
+            margin-top: 10px;
+        }
+        .custom-color-option {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .color-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .color-input-group label {
+            flex-grow: 1;
+        }
+        .color-input-group input[type="color"] {
+            width: 50px;
+            height: 50px;
+            border: none;
+            cursor: pointer;
         }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="theme-macaron">
     
     <button id="menu-button" onclick="toggleMenu()">☰</button>
 
@@ -625,7 +936,8 @@
         <span id="menu-close" onclick="toggleMenu()">✕</span>
         <div class="menu-items-container">
             <div class="menu-item" onclick="showPastTodos()">查看過往待辦</div>
-            </div>
+            <div class="menu-item" onclick="showThemeSettings()">主題設定</div>
+        </div>
     </div>
 
     <div class="container">
@@ -677,6 +989,47 @@
                 <button class="nav-button" style="padding: 10px 20px; font-size: 1em; margin-top: -10px;" onclick="showPage('todo')">返回待辦清單</button>
                 <h2>過往待辦事項</h2>
                 <ul class="past-todo-list" id="past-todo-list"></ul>
+            </div>
+        </div>
+        
+        <div id="theme-settings" class="page">
+            <div class="card">
+                <button class="nav-button" style="padding: 10px 20px; font-size: 1em; margin-top: -10px;" onclick="showPage('todo')">返回主頁</button>
+                <h2>主題設定</h2>
+                
+                <h3>預設主題</h3>
+                <div class="theme-options">
+                    <div class="theme-option theme-macaron-option" onclick="applyTheme('macaron')">馬卡龍</div>
+                    <div class="theme-option theme-pixel-option" onclick="applyTheme('pixel')">像素風</div>
+                    <div class="theme-option theme-forest-option" onclick="applyTheme('forest')">森林</div>
+                    <div class="theme-option theme-desert-option" onclick="applyTheme('desert')">沙漠</div>
+                </div>
+                
+                <h3>自訂背景圖片</h3>
+                <div class="custom-options">
+                    <div class="custom-image-option">
+                        <label for="custom-background-upload">選擇圖片上傳:</label>
+                        <input type="file" id="custom-background-upload" accept="image/*">
+                        <button class="add-button" onclick="applyCustomImage()">套用背景</button>
+                    </div>
+                </div>
+
+                <h3>自訂顏色</h3>
+                <div class="custom-options custom-color-option">
+                    <div class="color-input-group">
+                        <label for="custom-primary-color">主要顏色:</label>
+                        <input type="color" id="custom-primary-color" value="#A9D6E5">
+                    </div>
+                    <div class="color-input-group">
+                        <label for="custom-secondary-color">輔助顏色:</label>
+                        <input type="color" id="custom-secondary-color" value="#92E6C2">
+                    </div>
+                    <div class="color-input-group">
+                        <label for="custom-card-color">背景卡片顏色:</label>
+                        <input type="color" id="custom-card-color" value="#FFFFFF">
+                    </div>
+                    <button class="add-button" onclick="applyCustomColors()">套用自訂顏色</button>
+                </div>
             </div>
         </div>
 
@@ -753,9 +1106,8 @@
             });
             document.getElementById(pageId).classList.add('active');
 
-            // 根據頁面顯示或隱藏主導航
             const nav = document.querySelector('.navigation');
-            if (pageId === 'past-todo-page') {
+            if (pageId === 'past-todo-page' || pageId === 'theme-settings') {
                 nav.style.display = 'none';
             } else {
                 nav.style.display = 'flex';
@@ -774,6 +1126,104 @@
             renderPastTodoItems();
         }
 
+        // === 主題設定功能 ===
+        function showThemeSettings() {
+            toggleMenu();
+            showPage('theme-settings');
+            highlightActiveTheme();
+        }
+        
+        function applyTheme(themeName) {
+            const body = document.body;
+            body.className = ''; 
+            body.classList.add(`theme-${themeName}`);
+            document.documentElement.style.setProperty('--body-bg-image', 'none'); 
+            
+            // 清除自訂顏色的 inline style
+            document.documentElement.style.removeProperty('--primary-color');
+            document.documentElement.style.removeProperty('--secondary-color');
+            document.documentElement.style.removeProperty('--card-bg-color');
+            document.documentElement.style.removeProperty('--background-color');
+
+            localStorage.setItem('theme', themeName);
+            localStorage.removeItem('customImage');
+            localStorage.removeItem('customColors');
+            
+            highlightActiveTheme();
+        }
+
+        function highlightActiveTheme() {
+            const themeOptions = document.querySelectorAll('.theme-option');
+            themeOptions.forEach(option => {
+                option.classList.remove('active');
+            });
+            
+            const currentTheme = localStorage.getItem('theme') || 'macaron';
+            const activeOption = document.querySelector(`.theme-${currentTheme}-option`);
+            if (activeOption) {
+                activeOption.classList.add('active');
+            }
+        }
+        
+        function applyCustomImage() {
+            const fileInput = document.getElementById('custom-background-upload');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageDataUrl = e.target.result;
+                    document.documentElement.style.setProperty('--body-bg-image', `url("${imageDataUrl}")`);
+                    localStorage.setItem('customImage', imageDataUrl);
+
+                    document.body.className = ''; 
+                    localStorage.removeItem('theme');
+                    localStorage.removeItem('customColors');
+                    highlightActiveTheme();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function applyCustomColors() {
+            const primaryColor = document.getElementById('custom-primary-color').value;
+            const secondaryColor = document.getElementById('custom-secondary-color').value;
+            const cardColor = document.getElementById('custom-card-color').value;
+            
+            const root = document.documentElement;
+            root.style.setProperty('--primary-color', primaryColor);
+            root.style.setProperty('--secondary-color', secondaryColor);
+            root.style.setProperty('--card-bg-color', cardColor);
+            root.style.setProperty('--background-color', cardColor);
+
+            localStorage.setItem('customColors', JSON.stringify({ primaryColor, secondaryColor, cardColor }));
+            
+            document.body.className = '';
+            localStorage.removeItem('theme');
+            localStorage.removeItem('customImage');
+            highlightActiveTheme();
+        }
+
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const customImage = localStorage.getItem('customImage');
+            const customColors = localStorage.getItem('customColors');
+            
+            if (customImage) {
+                document.documentElement.style.setProperty('--body-bg-image', `url("${customImage}")`);
+                document.body.className = ''; 
+            } else if (customColors) {
+                const colors = JSON.parse(customColors);
+                const root = document.documentElement;
+                root.style.setProperty('--primary-color', colors.primaryColor);
+                root.style.setProperty('--secondary-color', colors.secondaryColor);
+                root.style.setProperty('--card-bg-color', colors.cardColor);
+                root.style.setProperty('--background-color', colors.cardColor);
+                document.body.className = ''; 
+            } else if (savedTheme) {
+                applyTheme(savedTheme);
+            }
+        }
+        
         // === 待辦事項功能 ===
         const todoInput = document.getElementById('new-todo-input');
         const todoDateInput = document.getElementById('new-todo-date');
@@ -1278,13 +1728,13 @@
 
         // 頁面載入時初始化
         document.addEventListener('DOMContentLoaded', () => {
+            loadSavedTheme();
             if(timerDisplay) {
                 setTimer();
             }
             renderLists();
             toggleHabitGoalOptions();
         });
-
     </script>
 </body>
 </html>
