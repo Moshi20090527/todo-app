@@ -755,21 +755,117 @@
             background-color: var(--secondary-color);
         }
 
-        /* 日曆整體樣式調整 */
-        .habit-calendar-wrapper, .calendar-wrapper {
-            max-width: 400px;
+        /* 習慣日曆樣式 (調整為更小) */
+        .habit-calendar-wrapper {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .habit-calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .habit-calendar-nav button {
+            background: none;
+            border: none;
+            font-size: 1.2em; /* 縮小字體 */
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: color 0.2s;
+        }
+        .habit-calendar-nav button:hover {
+            color: #93B8C7;
+        }
+        .theme-pixel .habit-calendar-nav button {
+            color: var(--text-color);
+        }
+        .habit-calendar-nav span {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1em; /* 縮小字體 */
+        }
+        .habit-calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px; /* 縮小間距 */
+            text-align: center;
+        }
+        .habit-calendar-grid > div {
+            padding: 8px; /* 縮小內距 */
+            border-radius: 8px; /* 縮小圓角 */
+            background-color: #E6EAF0;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            position: relative;
+            font-size: 0.9em; /* 縮小字體 */
+        }
+        .theme-pixel .habit-calendar-grid > div {
+            border-radius: 0;
+            border: 2px solid var(--text-color);
+            background-color: var(--card-bg-color);
+        }
+        .habit-calendar-grid > div:hover {
+            background-color: #D3D8E0;
+            transform: scale(1.05);
+        }
+        .theme-pixel .habit-calendar-grid > div:hover {
+            background-color: var(--primary-color);
+        }
+        .habit-calendar-grid .day-name {
+            font-weight: bold;
+            color: #888;
+            background: none;
+            cursor: default;
+        }
+        .theme-pixel .habit-calendar-grid .day-name {
+            color: var(--text-color);
+            background-color: transparent;
+            border: none;
+        }
+        .habit-calendar-grid .day-name:hover {
+            transform: none;
+        }
+        .habit-calendar-grid .empty-day {
+            background: none;
+            cursor: default;
+        }
+        .habit-calendar-grid .empty-day:hover {
+            transform: none;
+        }
+        .habit-calendar-grid .today {
+            border: 2px solid var(--accent-color);
+            background-color: #FEE7ED;
+        }
+        .theme-pixel .habit-calendar-grid .today {
+            background-color: var(--accent-color);
+        }
+        .habit-calendar-grid .achieved {
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: bold;
+        }
+        .habit-calendar-grid .missed {
+            background-color: #FFC0CB;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* 日曆整體樣式調整 (調整為更小) */
+        .calendar-wrapper {
+            max-width: 300px;
             margin: 0 auto;
         }
         .calendar-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
         .calendar-nav button {
             background: none;
             border: none;
-            font-size: 1.5em;
+            font-size: 1.2em; /* 縮小字體 */
             cursor: pointer;
             color: var(--primary-color);
             transition: color 0.2s;
@@ -783,20 +879,22 @@
         .calendar-nav h3 {
             margin: 0;
             color: var(--primary-color);
+            font-size: 1em; /* 縮小字體 */
         }
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
+            gap: 2px; /* 縮小間距 */
             text-align: center;
         }
         .calendar-grid > div {
-            padding: 10px;
-            border-radius: 10px;
+            padding: 8px; /* 縮小內距 */
+            border-radius: 8px; /* 縮小圓角 */
             background-color: #E6EAF0;
             cursor: pointer;
             transition: background-color 0.2s, transform 0.2s;
             position: relative;
+            font-size: 0.9em; /* 縮小字體 */
         }
         .theme-pixel .calendar-grid > div {
             border-radius: 0;
@@ -1749,7 +1847,7 @@
         const habitEndDateInput = document.getElementById('habit-end-date');
         const habitTargetCountTotalInput = document.getElementById('habit-target-count-total');
         const habitList = document.getElementById('habit-list');
-
+        
         let habits = JSON.parse(localStorage.getItem('habits')) || [];
 
         function saveHabits() {
@@ -1849,14 +1947,16 @@
                         </div>
                     </div>
                     <div class="habit-item-content">
-                        <span>進度: ${currentCount} / ${habit.target} ${goalText}</span>
+                        <span class="habit-progress-info">進度: ${currentCount} / ${habit.target} ${goalText}</span>
                         <div class="habit-progress-container">
                             <div class="habit-progress-bar" style="width: ${progressPercentage > 100 ? 100 : progressPercentage}%;"></div>
                         </div>
-                        ${renderCalendar(index)}
+                        <div id="habit-calendar-${index}"></div>
                     </div>
                 `;
                 habitList.appendChild(habitItem);
+                
+                renderHabitCalendar(index);
 
                 if (index === expandedIndex) {
                     habitItem.querySelector('.habit-item-header').classList.add('expanded');
@@ -1922,8 +2022,11 @@
             return count;
         }
 
-        function renderCalendar(habitIndex) {
+        function renderHabitCalendar(habitIndex) {
             const habit = habits[habitIndex];
+            const calendarContainer = document.getElementById(`habit-calendar-${habitIndex}`);
+            if (!calendarContainer) return;
+            
             const today = new Date();
             const currentMonth = today.getMonth();
             const currentYear = today.getFullYear();
@@ -1932,31 +2035,72 @@
 
             let calendarHTML = `
                 <div class="habit-calendar-wrapper">
-                    <div class="habit-calendar-header">
+                    <div class="habit-calendar-nav">
                         <span>${currentYear}年 ${currentMonth + 1}月</span>
                     </div>
-                    <div class="habit-calendar-body">
-                        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+                    <div class="habit-calendar-grid">
+                        <div class="day-name">日</div>
+                        <div class="day-name">一</div>
+                        <div class="day-name">二</div>
+                        <div class="day-name">三</div>
+                        <div class="day-name">四</div>
+                        <div class="day-name">五</div>
+                        <div class="day-name">六</div>
             `;
 
             let dayOfWeek = firstDayOfMonth.getDay();
             for (let i = 0; i < dayOfWeek; i++) {
-                calendarHTML += '<div></div>';
+                calendarHTML += '<div class="empty-day"></div>';
             }
 
             for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
                 const date = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                const isToday = today.getDate() === day && today.getMonth() === currentMonth;
+                const isToday = today.getDate() === day && today.getMonth() === currentMonth && today.getFullYear() === currentYear;
                 const achieved = habit.completedDays[date] === true;
-                const missed = habit.completedDays[date] === false;
-                const className = `habit-calendar-day ${isToday ? 'today' : ''} ${achieved ? 'achieved' : ''} ${missed ? 'missed' : ''}`;
                 
-                calendarHTML += `<div class="${className}" onclick="event.stopPropagation(); toggleHabitCompletion(${habitIndex}, '${date}')">${day}</div>`;
+                const className = `${isToday ? 'today' : ''} ${achieved ? 'achieved' : ''}`;
+                
+                calendarHTML += `<div class="${className}" onclick="toggleHabitCompletion(${habitIndex}, '${date}')" data-date="${date}">${day}</div>`;
             }
 
             calendarHTML += '</div></div>';
-            return calendarHTML;
+            calendarContainer.innerHTML = calendarHTML;
         }
+        
+        function updateHabitProgressBar(habitIndex) {
+            const habit = habits[habitIndex];
+            const currentCount = getCurrentHabitCount(habit);
+            const progressPercentage = (currentCount / habit.target) * 100;
+            
+            const progressInfoSpan = document.querySelector(`#habit-list > .habit-item:nth-child(${habitIndex + 1}) .habit-progress-info`);
+            const progressBarDiv = document.querySelector(`#habit-list > .habit-item:nth-child(${habitIndex + 1}) .habit-progress-bar`);
+            
+            if (progressInfoSpan) {
+                let goalText = '';
+                if (habit.goalType === 'by-date') {
+                    const timeLeft = Math.ceil((new Date(habit.endDate) - new Date()) / (1000 * 60 * 60 * 24));
+                    goalText = `在 ${habit.endDate} 前完成`;
+                    if (timeLeft > 0) {
+                        goalText += ` (剩餘 ${timeLeft} 天)`;
+                    } else if (timeLeft <= 0 && currentCount < habit.target) {
+                        goalText += ` (已逾期)`;
+                    } else if (currentCount >= habit.target) {
+                        goalText += ` (已達成)`;
+                    }
+                } else {
+                    goalText = `總目標次數`;
+                    if (currentCount >= habit.target) {
+                        goalText += ` (已達成)`;
+                    }
+                }
+                progressInfoSpan.textContent = `進度: ${currentCount} / ${habit.target} ${goalText}`;
+            }
+
+            if (progressBarDiv) {
+                progressBarDiv.style.width = `${progressPercentage > 100 ? 100 : progressPercentage}%`;
+            }
+        }
+
 
         function toggleHabitCompletion(habitIndex, date) {
             const habit = habits[habitIndex];
@@ -1967,8 +2111,16 @@
                 habit.completedDays[date] = true;
             }
             
-            renderHabits(habitIndex); 
             saveHabits();
+            
+            // 找到對應的日曆天數元素並切換 'achieved' 類別
+            const dayElement = document.querySelector(`#habit-calendar-${habitIndex} [data-date="${date}"]`);
+            if (dayElement) {
+                dayElement.classList.toggle('achieved');
+            }
+            
+            // 更新進度條
+            updateHabitProgressBar(habitIndex);
         }
 
         // 頁面載入時初始化
@@ -1980,6 +2132,7 @@
             renderLists();
             toggleHabitGoalOptions();
             renderTimelines();
+            renderHabits();
         });
     </script>
 </body>
